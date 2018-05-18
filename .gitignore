@@ -1,3 +1,5 @@
 externalResources/
 node_modules/
 build/
+server/**/*.js
+server/**/*.map
