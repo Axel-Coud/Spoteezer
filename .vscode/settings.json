@@ -6,7 +6,8 @@
         "**/CVS": true,
         "**/.DS_Store": true,
         "server/**/*.js": true,
-        "server/**/*.js.map": true
+        "server/**/*.js.map": true,
+        "node_modules/": true
     },
     "launch": {
         "configurations": [{
