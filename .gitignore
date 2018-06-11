@@ -1,5 +1,5 @@
 externalResources/
 node_modules/
-build/
+client/bundle.js
 server/**/*.js
 server/**/*.map
