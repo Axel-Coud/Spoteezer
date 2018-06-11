@@ -5,7 +5,26 @@
         "**/.hg": true,
         "**/CVS": true,
         "**/.DS_Store": true,
-        "server/*.js": true,
-        "server/*.js.map": true
+        "server/**/*.js": true,
+        "server/**/*.js.map": true
+    },
+    "launch": {
+        "configurations": [{
+            "name": "Launch Spoteezer",
+            "type": "node",
+            "protocol": "inspector",
+            "request": "launch",
+            "program": "${workspaceRoot}/server/server.js",
+            "cwd": "${workspaceRoot}",
+            "outFiles": [],
+            "console": "internalConsole",
+            "smartStep": true,
+            "env": {},
+            "skipFiles": [
+                "${workspaceRoot}node_modules/**/*.js",
+                "<node_internals>/**/*.js"
+            ],
+            "sourceMaps": true
+        }]
     }
 }
