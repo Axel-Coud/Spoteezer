@@ -1,9 +1,9 @@
 const path = require('path');
 
 const config = {
-    entry: ['./client/App.tsx'],
+    entry: ['./client/src/App.tsx'],
     output: {
-        path: path.resolve(__dirname, 'build'),
+        path: path.resolve(__dirname, 'client'),
         filename: 'bundle.js'
     },
     resolve: {
