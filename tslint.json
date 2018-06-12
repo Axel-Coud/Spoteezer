@@ -9,6 +9,7 @@
         "semicolon": false,
         "no-duplicate-variable": true,
         "no-trailing-whitespace": true,
-        "trailing-comma": false
-    }
+        "trailing-comma": false,
+        "quotemark": false,
+    },
 }
