@@ -7,7 +7,7 @@ export default class Container extends React.Component {
         return (
             <div>
                 <h1 className="pouet">Nous sommes dans le container</h1>
-                <Button type="primary" >Button</Button>
+                <Button type="primary" size="large" >Ant-design est bien loadé</Button>
             </div>
         )
     }
