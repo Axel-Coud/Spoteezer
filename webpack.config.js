@@ -11,9 +11,15 @@ const config = {
     },
     module: {
         rules: [{
-            test: /\.tsx?$/,
+            test: /\.tsx$/,
             exclude: /node_modules/,
             loaders: 'ts-loader'
+        }, {
+            test: /\.css$/,
+            use: [
+                { loader: "style-loader" },
+                { loader: "css-loader" }
+            ]
         }]
     },
     mode: "development"
