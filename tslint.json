@@ -1,0 +1,14 @@
+{
+	"extends": [
+		"tslint:latest"
+    ],
+    "rules": {
+        "interface-name": [
+            false
+        ],
+        "semicolon": false,
+        "no-duplicate-variable": true,
+        "no-trailing-whitespace": true,
+        "trailing-comma": false
+    }
+}
