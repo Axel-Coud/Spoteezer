@@ -12,4 +12,6 @@ client.on('error', (err) => {
     console.log('Erreur émise par le client postgres: ', err)
 })
 
+client.connect()
+
 export default client
