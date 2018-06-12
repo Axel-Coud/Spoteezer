@@ -30,6 +30,6 @@
   "scripts": {
     "bundle": "webpack --watch",
     "tsc": "tsc",
-    "dev": "nodemon --delay 1 --watch server/**/*.js server/server.js"
+    "dev": "nodemon --delay 1 -e js --watch server server/server.js"
   }
 }
