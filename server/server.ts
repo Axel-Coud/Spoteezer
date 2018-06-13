@@ -2,7 +2,6 @@ import express from 'express'
 import config from './config'
 import path from 'path'
 import router from './router/routerApex'
-import pgClient from './db'
 
 const server = express()
 
@@ -27,20 +26,20 @@ server.listen(config.port, () => {
 })
 
 // le client se ferme déjà automatiquement(j'ai laissé si jamais j'en aurai besoin un jour)
-process.on('SIGINT', () => {
-    // pgClient.end((err) => {
-    //     if (err) {
-    //         console.log(err)
-    //     }
-        console.log('Server closed')
-//     })
-})
+// process.on('SIGINT', () => {
+//     // pgClient.end((err) => {
+//     //     if (err) {
+//     //         console.log(err)
+//     //     }
+//         console.log('Server closed')
+// //     })
+// })
 
-process.on('exit' , async () => {
-//     pgClient.end((err) => {
-//         if (err) {
-//             console.log(err)
-//         }
-        console.log('Server closed')
-//     })
-})
+// process.on('exit' , async () => {
+// //     pgClient.end((err) => {
+// //         if (err) {
+// //             console.log(err)
+// //         }
+//         console.log('Server closed')
+// //     })
+// })
