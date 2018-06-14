@@ -1,9 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Container from './components/Container'
+// import Container from './components/Container'
+import Login from './components/Login'
+// import {Form} from 'antd'
 import 'antd/dist/antd.css'
 
+
 ReactDOM.render(
-    <Container/>,
+    <Login/>,
     document.getElementById('root')
 )
