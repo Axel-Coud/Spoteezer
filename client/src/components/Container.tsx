@@ -3,7 +3,7 @@ import {Button} from 'antd'
 
 export default class Container extends React.Component {
 
-    render() {
+    public render() {
         return (
             <div>
                 <h1 className="pouet">Nous sommes dans le container</h1>
