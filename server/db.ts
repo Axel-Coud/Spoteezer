@@ -10,8 +10,10 @@ const client = new Client({
 
 client.on('error', (err) => {
     console.log('Erreur émise par le client postgres: ', err)
-})
+});
 
-client.connect()
+(async () => {
+    client.connect()
+})();
 
 export default client
