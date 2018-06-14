@@ -1,12 +1,7 @@
 import { Client } from 'pg'
+import config from './config';
 
-const client = new Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'spoteezer',
-    password: 'admin',
-    port: 5432
-})
+const client = new Client(config.dbConfig)
 
 client.on('error', (err) => {
     console.log('Erreur émise par le client postgres: ', err)
