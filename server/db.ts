@@ -13,7 +13,7 @@ client.on('error', (err) => {
 });
 
 (async () => {
-    client.connect()
+    await client.connect()
 })();
 
 export default client
