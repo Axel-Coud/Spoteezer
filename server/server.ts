@@ -1,6 +1,5 @@
 import express from 'express'
 import config from './config'
-import path from 'path'
 import router from './router/routerApex'
 
 const server = express()
@@ -14,7 +13,7 @@ server.use(router)
 // Entry-point
 server.get('/', (_, res) => {
 
-    res.sendFile(path.join(__dirname, './../client/index.html'))
+    res.sendFile('index.html')
 })
 
 server.listen(config.port, () => {
