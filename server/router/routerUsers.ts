@@ -1,6 +1,6 @@
-import {Router} from 'express'
-import addUser, { User } from '../controller/users/addUser';
-import getAllUsers from '../controller/users/getAllUsers';
+import { Router } from 'express'
+import addUser, { User } from '../controller/users/addUser'
+import getAllUsers from '../controller/users/getAllUsers'
 
 const router = Router()
 
@@ -27,15 +27,14 @@ router.post('/newUser', async (req, res) => {
         password: req.body.password
     }
 
-    let insertResult: null | User = null
     try {
-        insertResult = await addUser(userInfos)
+        await addUser(userInfos)
     } catch (error) {
-        console.log('Erreur dans post nwUser :' + error)
+        console.log('Erreur dans post newUser :' + error)
         return res.status(500).send(error)
     }
 
-    return res.status(200).send(insertResult)
+    return res.status(200).send('Nouveau user ajouté')
 })
 
 export default router

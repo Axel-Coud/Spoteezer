@@ -1,5 +1,6 @@
 import SQL from 'sql-template-strings'
 import pgClient from '../../db'
+import bcrypt from 'bcrypt'
 
 export interface User {
     nom: string,
@@ -13,9 +14,11 @@ export interface User {
  * Prends un literal contenant les informations du nouvel utilisateur et l'inject dans la db.
  * @param newUser Informations du nouvel utilisateur à ajouter
  */
-export default async function addUser(newUser: User): Promise<User> {
+export default async function addUser(newUser: User): Promise<void> {
 
     // Pour l'instant on gère le password en dur(à changer quand on va injecter la partie authentication)
+    const encryptedPassword = await encryptPassword(newUser.password)
+
     const sql = SQL`
     INSERT INTO utilisateur_uti (
         uti_nom,
@@ -28,10 +31,16 @@ export default async function addUser(newUser: User): Promise<User> {
         ${newUser.prenom},
         ${newUser.email},
         ${newUser.pseudo},
-        ${newUser.password}
-    ) RETURNING *
+        ${encryptedPassword}
+    )
     `
-    const insertResult = await pgClient.query(sql)
+    await pgClient.query(sql)
+}
 
-    return insertResult.rows[0]
+const encryptPassword = async (password: string): Promise<string> => {
+
+    const salt = await bcrypt.genSalt()
+    const cryptedPwd = await bcrypt.hash(password, salt)
+
+    return cryptedPwd
 }
