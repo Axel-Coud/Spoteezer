@@ -1,6 +1,7 @@
 import express from 'express'
 import config from './config'
 import router from './router/routerApex'
+import validateToken from './Authentication'
 
 const server = express()
 
@@ -8,6 +9,7 @@ const server = express()
 server.use(express.static(__dirname + './../client/'))
 
 server.use(express.json())
+server.use(validateToken)
 server.use(router)
 
 // Entry-point
