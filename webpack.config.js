@@ -7,12 +7,15 @@ const config = {
         filename: 'bundle.js'
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js']
+        extensions: ['.tsx', '.js']
     },
     module: {
         rules: [{
             test: /\.tsx$/,
             exclude: /node_modules/,
+            options: {
+              configFile: 'tsconfig.webpack.json'
+            },
             loaders: 'ts-loader'
         }, {
             test: /\.css$/,
