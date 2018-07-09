@@ -4,9 +4,11 @@ import ReactDOM from 'react-dom'
 import Login from './components/Login'
 // import {Form} from 'antd'
 import 'antd/dist/antd.css'
-
+import Global from './global/Global'
 
 ReactDOM.render(
-    <Login/>,
+    <Global>
+        <Login/>
+    </Global>,
     document.getElementById('root')
 )

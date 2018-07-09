@@ -33,7 +33,7 @@ export default class Login extends React.Component {
                         <Form.Item>
                             <Checkbox>Se souvenir de moi</Checkbox>
                             <a className="spz-login-forgot" href="#">Mot de passe oublié</a><br/>
-                            <Button style={buttonStyle} size="large" type="primary" >Se connecter</Button><br/>
+                            <Button style={buttonStyle} size="large"type="primary">Se connecter</Button><br/>
                             <Button style={buttonStyle} size="large" type="dashed">Créer un compte</Button>
                         </Form.Item>
                     </Form>
