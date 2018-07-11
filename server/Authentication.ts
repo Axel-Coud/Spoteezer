@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { Request, NextFunction, Response } from 'express'
 
-export default function validateToken(req: Request, res: Response, next: NextFunction): void {
-
+export default async function validateToken(req: Request, res: Response, next: NextFunction): Promise<void> {
     if (req.headers.authorization) {
         const token = req.headers.authorization.split(' ')[1]
         // @ts-ignore process.env.JWT_SECRET should not be considered undefined in any circumstances
@@ -11,15 +10,24 @@ export default function validateToken(req: Request, res: Response, next: NextFun
             if (err) {
                 next(new Error("Json Web Token Invalide : " + err))
             }
+            console.log('/--/Token validé');
             next()
         })
 
+    // Si l'utilisateur veut créer un compte on accepte sans token
+    } else if (req.originalUrl === '/users/add') {
+
+        next()
+
+    // L'utilisateur se connecte mais ne dispose plus de token, on envoit le token dans les cookies
+    } else {
+
+        // try {
+        //     const token = await generateToken(1)
+        // } catch (error) {
+        //     console.log(error)
+        // }
     }
-    // try {
-    //     const token = await generateToken(1)
-    // } catch (error) {
-    //     console.log(error)
-    // }
 }
 
 interface JwtPayload {

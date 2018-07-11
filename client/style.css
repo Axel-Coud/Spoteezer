@@ -17,3 +17,9 @@
     border-radius:20px;
     padding: 15px 25px 0 25px !important;
 }
+
+/* center modal icon for sign up */
+.spz-signup-modal .ant-modal-title {
+    display: flex;
+    justify-content: center;
+}
