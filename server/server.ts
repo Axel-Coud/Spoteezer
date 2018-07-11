@@ -2,12 +2,14 @@ import express from 'express'
 import config from './config'
 import router from './router/routerApex'
 import validateToken from './Authentication'
+import cookieParser from 'cookie-parser'
 
 const server = express()
 
 // On sert les assets depuis le rootDir ./client
 server.use(express.static(__dirname + './../client/'))
 
+server.use(cookieParser())
 server.use(express.json())
 server.use(validateToken)
 server.use(router)

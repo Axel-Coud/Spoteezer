@@ -1,13 +1,14 @@
 import SQL from 'sql-template-strings'
 import pgClient from '../../db'
-import bcrypt from 'bcrypt'
+import encryptPassword from '../miscs/encryptPassword'
 
 export interface User {
     nom: string,
     prenom: string,
     email: string,
-    pseudo: string,
-    password: string
+    username: string,
+    password: string,
+    userId: string
 }
 
 /**
@@ -30,17 +31,9 @@ export default async function addUser(newUser: User): Promise<void> {
         ${newUser.nom},
         ${newUser.prenom},
         ${newUser.email},
-        ${newUser.pseudo},
+        ${newUser.username},
         ${encryptedPassword}
     )
     `
     await pgClient.query(sql)
-}
-
-const encryptPassword = async (password: string): Promise<string> => {
-
-    const salt = await bcrypt.genSalt()
-    const cryptedPwd = await bcrypt.hash(password, salt)
-
-    return cryptedPwd
 }

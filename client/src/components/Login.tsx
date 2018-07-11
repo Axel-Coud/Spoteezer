@@ -28,19 +28,27 @@ export default class Login extends React.Component {
     }
 
     login = async (): Promise<void> => {
+        console.log(document.cookie += '')
         const [ username, password ] = [ this.state.usernameInput, this.state.passwordInput ]
         if (!this.isLoginValid(username, password)) {
             return
         }
 
-        await axios({
-            method: 'post',
-            url: '',
-            data: {
-                username,
-                password
-            }
-        })
+        try {
+            await axios({
+                method: 'post',
+                url: 'http://localhost:8888/login',
+                data: {
+                    username,
+                    password
+                }
+            })
+        } catch (error) {
+            notification.error({
+                message: 'Erreur serveur',
+                description: error.response.data
+            })
+        }
     }
 
     toggleSignUpVisibility = () => {
