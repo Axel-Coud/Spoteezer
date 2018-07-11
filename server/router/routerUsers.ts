@@ -17,7 +17,7 @@ router.get('/all', async (_, res) => {
     return res.status(200).send(users)
 })
 
-router.post('/newUser', async (req, res) => {
+router.post('/add', async (req, res) => {
 
     const userInfos: User = {
         nom: req.body.nom,
