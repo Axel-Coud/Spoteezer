@@ -19,6 +19,7 @@
             true,
             {"limit": 150}
         ],
-        "no-object-literal-type-assertion": false
+        "no-object-literal-type-assertion": false,
+        "no-string-literal": false
     }
 }
