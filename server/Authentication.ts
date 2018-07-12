@@ -3,26 +3,26 @@ import { Request, NextFunction, Response } from 'express'
 
 export default async function validateToken(req: Request, res: Response, next: NextFunction): Promise<void> {
 
-    // Si l'utilisateur veut créer un compte on accepte sans token
-    if (req.originalUrl === '/users/add') {
+    // Si l'utilisateur veut créer un compte ou se connecter on accepte sans token
+    if (req.originalUrl === '/users/add' || req.originalUrl === '/login') {
 
         next()
-    } else if (req.headers.authorization) {
-        const token = req.headers.authorization.split(' ')[1]
+    } else if (!req.cookies.jwt) {
+        res.status(500).send('No token provided')
+        
+    } else {
+        const { token } = req.cookies
         // @ts-ignore process.env.JWT_SECRET should not be considered undefined in any circumstances
         const secret: string = process.env.JWT_SECRET
         jwt.verify(token, secret, (err) => {
+            // Si le token n'est pas authentifié on renvoit sur l'entry point du serveur(page de login)
             if (err) {
-                next(new Error("Json Web Token Invalide : " + err))
+                console.log("JSON web token invalide : ", err)
+                res.sendFile('index.html')
             }
-            console.log('/--/Token validé');
+            console.log('/--/Token validé')
             next()
         })
-
-
-    // L'utilisateur se connecte mais ne dispose plus de token, on envoit le token dans les cookies
-    } else {
-        res.status(500).send('No token provided')
 
         // try {
         //     const token = generateToken(1)

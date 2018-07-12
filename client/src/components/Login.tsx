@@ -28,14 +28,14 @@ export default class Login extends React.Component {
     }
 
     login = async (): Promise<void> => {
-        console.log(document.cookie += '')
+
         const [ username, password ] = [ this.state.usernameInput, this.state.passwordInput ]
         if (!this.isLoginValid(username, password)) {
             return
         }
 
         try {
-            await axios({
+            const { data } = await axios({
                 method: 'post',
                 url: 'http://localhost:8888/login',
                 data: {
@@ -43,6 +43,14 @@ export default class Login extends React.Component {
                     password
                 }
             })
+            notification.success({
+                description: '',
+                message: data
+            })
+
+            // On fait en sorte de sortir la page principale de l'application(Router qui switch de login à autre chose ?)
+            // Check les cookie pour jwt ?
+
         } catch (error) {
             notification.error({
                 message: 'Erreur serveur',

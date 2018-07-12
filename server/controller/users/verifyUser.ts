@@ -1,10 +1,9 @@
-import { UserToLog } from "../../router/routerLogin"
 import { SQL } from "sql-template-strings"
-import encryptPassword from "../miscs/encryptPassword"
+import bcrypt from 'bcrypt'
+import pg from '../../db'
+import { UserToLog } from "../../router/routerLogin";
 
 export default async function verifyUser(username: string, password: string): Promise<UserToLog> {
-
-    const encryptedPassword = encryptPassword(password)
 
     const sql = SQL`
         SELECT
@@ -19,5 +18,19 @@ export default async function verifyUser(username: string, password: string): Pr
         WHERE
             uti.uti_username = ${username}
     `
+
+    const retrievedUser = await pg.query(sql)
+
+    if (!retrievedUser.rowCount) {
+        throw new Error(`Aucun utilisateur '${username}' trouvé`)
+    }
+
+    const isPasswordRight = await bcrypt.compare(password, retrievedUser.rows[0].password)
+
+    if (!isPasswordRight) {
+        throw new Error(`Mot de passe incorrect`)
+    }
+
+    return retrievedUser.rows[0]
 
 }

@@ -20,10 +20,13 @@ router.post('/login', async (req, res) => {
     try {
         userToLogIn = await verifyUser(req.body.username, req.body.password)
     } catch (error) {
-        return res.status(500).send(error)
+        console.log('Erreur dans verifyUser : ', error)
+        return res.status(500).json(error.message)
     }
 
-    res.cookie('jwt', generateToken(userToLogIn.userId))
+    res.cookie('token', generateToken(userToLogIn.userId))
+
+    res.status(200).send(`Bienvenue, ${userToLogIn.prenom}`)
 
 })
 

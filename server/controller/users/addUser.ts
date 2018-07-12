@@ -1,5 +1,5 @@
 import SQL from 'sql-template-strings'
-import pgClient from '../../db'
+import pg from '../../db'
 import encryptPassword from '../miscs/encryptPassword'
 
 export interface User {
@@ -17,15 +17,19 @@ export interface User {
  */
 export default async function addUser(newUser: User): Promise<void> {
 
+    if (verifyUsernameExists(newUser.username)) {
+        throw new Error(`Ce pseudonyme éxiste déjà`)
+    }
+
     // Pour l'instant on gère le password en dur(à changer quand on va injecter la partie authentication)
     const encryptedPassword = await encryptPassword(newUser.password)
 
-    const sql = SQL`
+    const addUserSql = SQL`
     INSERT INTO utilisateur_uti (
         uti_nom,
         uti_prenom,
         uti_email,
-        uti_pseudo,
+        uti_username,
         uti_password
     ) VALUES (
         ${newUser.nom},
@@ -35,5 +39,25 @@ export default async function addUser(newUser: User): Promise<void> {
         ${encryptedPassword}
     )
     `
-    await pgClient.query(sql)
+    await pg.query(addUserSql)
+}
+
+async function verifyUsernameExists(username: string): Promise<boolean> {
+
+    const sql = SQL`
+        SELECT
+            *
+        FROM
+            utilisateur_uti uti
+        WHERE
+            uti.uti_username = ${username}
+    `
+
+    const retrievedUser = await pg.query(sql)
+
+    if (retrievedUser.rowCount) {
+        return true
+    }
+
+    return false
 }
