@@ -7,9 +7,9 @@ export default async function validateToken(req: Request, res: Response, next: N
     if (req.originalUrl === '/users/add' || req.originalUrl === '/login') {
 
         next()
-    } else if (!req.cookies.jwt) {
-        res.status(500).send('No token provided')
-        
+    } else if (!req.cookies.token) {
+        res.redirect('/')
+
     } else {
         const { token } = req.cookies
         // @ts-ignore process.env.JWT_SECRET should not be considered undefined in any circumstances
@@ -18,17 +18,12 @@ export default async function validateToken(req: Request, res: Response, next: N
             // Si le token n'est pas authentifié on renvoit sur l'entry point du serveur(page de login)
             if (err) {
                 console.log("JSON web token invalide : ", err)
-                res.sendFile('index.html')
+                res.redirect('/')
             }
             console.log('/--/Token validé')
             next()
         })
 
-        // try {
-        //     const token = generateToken(1)
-        // } catch (error) {
-        //     console.log(error)
-        // }
     }
 }
 
