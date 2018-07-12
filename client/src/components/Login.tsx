@@ -79,14 +79,14 @@ export default class Login extends React.Component {
                         />
                         <Form.Item>
                             <Input
-                                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+                                prefix={<Icon type="user" className="spz-form-icon" />}
                                 placeholder="Pseudonyme"
                                 onChange={(e) => this.setState({usernameInput: e.target.value})}
                             />
                         </Form.Item>
                         <Form.Item>
                             <Input
-                                prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+                                prefix={<Icon type="lock" className="spz-form-icon" />}
                                 type="password"
                                 placeholder="Mot de passe"
                                 onChange={(e) => this.setState({passwordInput: e.target.value})}
