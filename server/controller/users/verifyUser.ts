@@ -12,13 +12,11 @@ export default async function verifyUser(username: string, password: string): Pr
             uti.uti_prenom AS prenom,
             uti.uti_nom AS nom,
             uti.uti_email AS email,
-            uti.uti_pseudo AS username,
+            uti.uti_username AS username,
             uti.uti_password as password
         FROM
             utilisateur_uti uti
         WHERE
-            uti.uti_password = ${encryptedPassword}
-            AND
             uti.uti_username = ${username}
     `
 

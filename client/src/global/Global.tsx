@@ -18,7 +18,7 @@ interface User {
     uti_nom: string
     uti_prenom: string
     uti_email: string
-    uti_pseudo: string
+    uti_username: string
 }
 
 export const GlobalContext = React.createContext({} as Context)

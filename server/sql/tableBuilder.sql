@@ -3,7 +3,7 @@
 	uti_nom VARCHAR(60) NOT NULL,
 	uti_prenom VARCHAR(60) NOT NULL,
 	uti_email VARCHAR(80) NOT NULL,
-	uti_pseudo VARCHAR(60) NOT NULL,
+	uti_username VARCHAR(60) NOT NULL,
 	uti_password VARCHAR NOT NULL
 )
 

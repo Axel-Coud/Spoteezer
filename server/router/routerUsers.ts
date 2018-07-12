@@ -23,7 +23,7 @@ router.post('/add', async (req, res) => {
         nom: req.body.nom,
         prenom: req.body.prenom,
         email: req.body.email,
-        pseudo: req.body.pseudo,
+        username: req.body.pseudo,
         password: req.body.password
     }
 
