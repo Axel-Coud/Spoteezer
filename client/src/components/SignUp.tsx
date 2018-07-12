@@ -53,10 +53,10 @@ export default Form.create()(class SignUp extends React.Component<{
             this.props.form.resetFields()
             this.props.toggleSignUpVisibility()
 
-        } catch (e) {
+        } catch (error) {
             notification.error({
-                message: 'Erreur interne',
-                description: 'test'
+                message: error.response.data ,
+                description: ''
             })
         }
     }
@@ -108,7 +108,7 @@ export default Form.create()(class SignUp extends React.Component<{
             <Modal
                 ref={this.signUpRef}
                 visible={this.props.isSignUpVisible}
-                title={<Icon type="user-add" style={{fontSize: 20}}>Créez votre compte</Icon>}
+                title={<Icon type="user-add" style={{fontSize: 20}} >Créez votre compte</Icon>}
                 onCancel={() => {
                     resetFields()
                     this.props.toggleSignUpVisibility()
@@ -126,7 +126,7 @@ export default Form.create()(class SignUp extends React.Component<{
                                 rules: [{required: true, message: 'Champ vide', }]
                             })(
                                 <Input
-                                prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+                                prefix={<Icon type="mail" className="spz-form-icon"/>}
                                 placeholder="Email"
                                 />
                             )
@@ -138,7 +138,7 @@ export default Form.create()(class SignUp extends React.Component<{
                                 rules: [{ required: true, message: 'Champ vide' }]
                             })(
                                 <Input
-                                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+                                    prefix={<Icon type="user" className="spz-form-icon" />}
                                     placeholder="Pseudonyme"
                                 />
                             )
@@ -156,7 +156,7 @@ export default Form.create()(class SignUp extends React.Component<{
                                 ]
                             })(
                                 <Input
-                                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+                                    prefix={<Icon type="lock" className="spz-form-icon" />}
                                     placeholder="Mot de passe"
                                     type="password"
                                 />
@@ -172,7 +172,7 @@ export default Form.create()(class SignUp extends React.Component<{
                                 ]
                             })(
                                 <Input
-                                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+                                    prefix={<Icon type="lock" className="spz-form-icon" />}
                                     placeholder="Retapez votre mot de passe"
                                     type="password"
                                 />
@@ -187,7 +187,7 @@ export default Form.create()(class SignUp extends React.Component<{
                                         rules: [{required: true, message: 'Champ vide', }]
                                     })(
                                         <Input
-                                            prefix={<Icon type="idcard" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+                                            prefix={<Icon type="idcard" className="spz-form-icon" />}
                                             placeholder="Prénom"
                                         />
                                     )
@@ -202,7 +202,7 @@ export default Form.create()(class SignUp extends React.Component<{
                                         rules: [{required: true, message: 'Champ vide', }]
                                     })(
                                         <Input
-                                            prefix={<Icon type="idcard" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+                                            prefix={<Icon type="idcard" className="spz-form-icon" />}
                                             placeholder="Nom"
                                         />
                                     )
