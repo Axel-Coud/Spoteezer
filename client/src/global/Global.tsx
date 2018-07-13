@@ -54,7 +54,7 @@ export default class Global extends React.Component {
     let authentication: null | any = null
 
     authentication = await axios.get('http://localhost:8888/authenticate')
-    this.setState({currentUser: authentication})
+    this.setState({currentUser: authentication.data.user)
     }
 
     getCurrentUser = (): Partial<User> | null => {
