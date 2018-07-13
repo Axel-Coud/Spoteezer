@@ -1,5 +1,3 @@
-import pg from '../../db'
-import SQL from 'sql-template-strings'
 import jwt from 'jsonwebtoken'
 import { User } from './addUser'
 import getUserById from './getUserById';

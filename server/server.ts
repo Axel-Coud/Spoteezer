@@ -41,7 +41,7 @@ server.get('/', (_, res) => {
     res.sendFile('index.html')
 })
 
-server.use('*', (req, res) => {
+server.use('*', (_, res) => {
     res.redirect('/');
 })
 
