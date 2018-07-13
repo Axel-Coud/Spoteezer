@@ -8,7 +8,7 @@ export interface User {
     email: string,
     username: string,
     password: string,
-    userId?: string
+    userid?: string
 }
 
 /**

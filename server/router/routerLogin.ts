@@ -7,7 +7,7 @@ export interface UserToLog {
     email: string
     prenom: string
     nom: string
-    userId: number
+    userid: number
     password?: string
 }
 
@@ -24,7 +24,7 @@ router.post('/login', async (req, res) => {
         return res.status(500).json(error.message)
     }
 
-    res.cookie('token', generateToken(userToLogIn.userId))
+    res.cookie('token', generateToken(userToLogIn.userid))
 
     res.status(200).send(`Bienvenue, ${userToLogIn.prenom}`)
 

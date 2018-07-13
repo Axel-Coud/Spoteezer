@@ -2,6 +2,8 @@ import React, { CSSProperties } from 'react'
 import { Form, Input, Icon, Button, Row, Col, notification } from 'antd'
 import SignUp from './SignUp'
 import axios from 'axios'
+import { GlobalContext } from '../global/Global';
+import { Link } from 'react-router-dom';
 
 // interface Inputs {
 //     usernameInput: string
@@ -95,10 +97,22 @@ export default class Login extends React.Component {
                         <Form.Item>
                             {/* <Checkbox>Se souvenir de moi</Checkbox> */}
                             <a className="spz-login-forgot" href="#">forgot password ?</a><br/>
-                            <Button style={buttonStyle}
-                            size="large"
-                            type="primary"
-                            onClick={this.login}>Sign In</Button><br/>
+                            <GlobalContext.Consumer>
+                                {
+                                    (global) => {
+
+                                        return <Button style={buttonStyle}
+                                            size="large"
+                                            type="primary"
+                                            onClick={ async () => {
+                                                await this.login()
+                                                await global.actions.setCurrentUser()
+                                            }}
+                                        >Sign In</Button>
+                                    }
+                                }
+                            </GlobalContext.Consumer>
+                            <br/>
                             <Button style={buttonStyle}
                                 size="large"
                                 type="dashed"

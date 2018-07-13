@@ -1,11 +1,15 @@
 import React from 'react'
+import axios from 'axios'
 
 interface GlobalState {
     currentUser: User | null
+    loadingScreen: boolean
 }
 
 interface GlobalActions {
-    getCurrentUser(): User | null
+    getCurrentUser(): Partial<User> | null
+    setCurrentUser(): Promise<void>
+    setLoadingScreen(): void
 }
 
 interface Context {
@@ -25,15 +29,42 @@ export const GlobalContext = React.createContext({} as Context)
 
 export default class Global extends React.Component {
     state: GlobalState = {
-        currentUser: null
+        currentUser: null,
+        loadingScreen: false
     }
 
-    getCurrentUser = () => {
+    async componentDidMount() {
+
+        try {
+            this.setCurrentUser()
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
+    setCurrentUser = async () => {
+    // On check la validité du token à l'initialisation de l'application
+    let authentication = null
+    this.setLoadingScreen()
+    authentication = await axios.get('http://localhost:8888/authenticate')
+    console.log(this.state)
+    this.setState({currentUser: authentication})
+    this.setLoadingScreen()
+    }
+
+    getCurrentUser = (): Partial<User> => {
         return this.state.currentUser
     }
 
+    setLoadingScreen = (): void => {
+        this.setState({loadingScreen: !this.state.loadingScreen})
+    }
+
     actions: GlobalActions = {
-        getCurrentUser: this.getCurrentUser
+        getCurrentUser: this.getCurrentUser,
+        setCurrentUser: this.setCurrentUser,
+        setLoadingScreen: this.setLoadingScreen
     }
 
     render() {

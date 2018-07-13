@@ -7,7 +7,7 @@ export default async function verifyUser(username: string, password: string): Pr
 
     const sql = SQL`
         SELECT
-            uti.uti_id AS userId,
+            uti.uti_id AS userid,
             uti.uti_prenom AS prenom,
             uti.uti_nom AS nom,
             uti.uti_email AS email,

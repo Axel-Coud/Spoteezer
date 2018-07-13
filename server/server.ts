@@ -2,7 +2,9 @@ import express from 'express'
 import config from './config'
 import router from './router/routerApex'
 import validateToken from './Authentication'
+import getUserFromToken from './controller/users/getUserFormToken'
 import cookieParser from 'cookie-parser'
+import { User } from './controller/users/addUser';
 
 const server = express()
 
@@ -14,16 +16,39 @@ server.use(express.json())
 server.use(validateToken)
 server.use(router)
 
+// Simple route to authenticate(used to tell if token is okay) by using validateToken middleware
+server.get('/authenticate', async (req, res) => {
+
+    let user: null | Partial<User> = null
+    try {
+        user = await getUserFromToken(req.cookies.token)
+    } catch (error) {
+        console.log("Erreur dans l'authentication : " + error)
+        return res.status(403).send({
+            authenticated: false
+        })
+    }
+
+    res.status(200).json({
+        authenticated: true,
+        user
+    })
+})
+
 // Entry-point
 server.get('/', (_, res) => {
 
     res.sendFile('index.html')
 })
 
+server.use('*', (req, res) => {
+    res.redirect('/');
+})
+
 server.listen(config.port, () => {
     console.log(`/************************************\\
-
-  Server is now running on port ${config.port}
+    
+    Server is now running on port ${config.port}
 
 /************************************\\`)
 })

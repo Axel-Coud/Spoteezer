@@ -1,14 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-// import Container from './components/Container'
-import Login from './components/Login'
-// import {Form} from 'antd'
+import Router from './Routing/Router'
 import 'antd/dist/antd.css'
 import Global from './global/Global'
 
 ReactDOM.render(
     <Global>
-        <Login/>
+        <Router />
     </Global>,
     document.getElementById('root')
 )
