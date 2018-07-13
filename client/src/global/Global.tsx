@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 
 interface GlobalState {
-    currentUser: User | null
+    currentUser: Partial<User> | null
     loadingScreen: boolean
 }
 
@@ -13,8 +13,8 @@ interface GlobalActions {
 }
 
 interface Context {
-    state: GlobalState | null
-    actions: GlobalActions | null
+    state: GlobalState
+    actions: GlobalActions
 }
 
 interface User {
@@ -45,7 +45,7 @@ export default class Global extends React.Component {
 
     setCurrentUser = async () => {
     // On check la validité du token à l'initialisation de l'application
-    let authentication = null
+    let authentication: null | any = null
 
     // On set le loading screen pour ne pas avoir le component login d'afficher
     this.setLoadingScreen()
@@ -54,7 +54,7 @@ export default class Global extends React.Component {
     this.setLoadingScreen()
     }
 
-    getCurrentUser = (): Partial<User> => {
+    getCurrentUser = (): Partial<User> | null => {
         return this.state.currentUser
     }
 

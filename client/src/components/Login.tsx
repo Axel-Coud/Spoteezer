@@ -3,7 +3,6 @@ import { Form, Input, Icon, Button, Row, Col, notification } from 'antd'
 import SignUp from './SignUp'
 import axios from 'axios'
 import { GlobalContext } from '../global/Global';
-import { Link } from 'react-router-dom';
 
 // interface Inputs {
 //     usernameInput: string
