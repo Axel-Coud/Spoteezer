@@ -47,7 +47,7 @@ server.use('*', (req, res) => {
 
 server.listen(config.port, () => {
     console.log(`/************************************\\
-    
+
     Server is now running on port ${config.port}
 
 /************************************\\`)
