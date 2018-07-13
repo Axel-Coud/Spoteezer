@@ -36,9 +36,15 @@ export default class Global extends React.Component {
     async componentDidMount() {
 
         try {
-            this.setCurrentUser()
+            // On set le loading screen pour ne pas avoir le component login d'afficher
+            this.setLoadingScreen()
+
+            await this.setCurrentUser()
+
+            this.setLoadingScreen()
         } catch (error) {
             console.log(error)
+            this.setLoadingScreen()
         }
 
     }
@@ -47,11 +53,8 @@ export default class Global extends React.Component {
     // On check la validité du token à l'initialisation de l'application
     let authentication: null | any = null
 
-    // On set le loading screen pour ne pas avoir le component login d'afficher
-    this.setLoadingScreen()
     authentication = await axios.get('http://localhost:8888/authenticate')
     this.setState({currentUser: authentication})
-    this.setLoadingScreen()
     }
 
     getCurrentUser = (): Partial<User> | null => {
