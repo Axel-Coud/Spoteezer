@@ -23,7 +23,7 @@ export default class Home extends React.Component {
                 collapsed={this.state.collapsed}
                 onCollapse={this.onCollapse}
             >
-                <div className="logo" />
+                <img src="./images/spoteezerIcon.png" className="home-sider-logo" />
                 <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                     <Menu.Item key="1">
                         <Icon type="caret-right" className="spz-home-layout-icon" />
