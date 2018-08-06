@@ -32,7 +32,11 @@
     font-size: 18px;
 }
 
-.home-sider-logo {
+.spz-layout .ant-menu-item, .spz-layout .ant-menu-submenu  {
+    text-align: left;
+}
+
+.spz-sider-logo {
     width: 50%;
     margin: 10px 0px 10px 0px;
 }

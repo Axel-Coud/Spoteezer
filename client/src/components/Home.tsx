@@ -17,13 +17,13 @@ export default class Home extends React.Component {
 
     render() {
         return (
-        <Layout style={{ minHeight: '100vh' }}>
+        <Layout className="spz-layout" style={{ minHeight: '100vh' }}>
             <Sider
                 collapsible
                 collapsed={this.state.collapsed}
                 onCollapse={this.onCollapse}
             >
-                <img src="./images/spoteezerIcon.png" className="home-sider-logo" />
+                <img src="./images/spoteezerIcon.png" className="spz-sider-logo" />
                 <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                     <Menu.Item key="1">
                         <Icon type="caret-right" className="spz-home-layout-icon" />
