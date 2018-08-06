@@ -17,7 +17,7 @@ export interface User {
  */
 export default async function addUser(newUser: User): Promise<void> {
 
-    if (verifyUsernameExists(newUser.username)) {
+    if (await verifyUsernameExists(newUser.username)) {
         throw new Error(`Ce pseudonyme éxiste déjà`)
     }
 
