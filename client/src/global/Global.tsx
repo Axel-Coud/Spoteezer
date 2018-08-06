@@ -41,7 +41,6 @@ export default class Global extends React.Component {
             await this.setCurrentUser()
             this.setLoadingScreen()
 
-
         } catch (error) {
             console.log(error)
             this.setLoadingScreen()
