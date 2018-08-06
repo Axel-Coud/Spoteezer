@@ -24,7 +24,7 @@ server.get('/authenticate', async (req, res) => {
         user = await getUserFromToken(req.cookies.token)
     } catch (error) {
         console.log("Erreur dans l'authentication : " + error)
-        return res.status(403).send({
+        return res.status(401).send({
             authenticated: false
         })
     }
