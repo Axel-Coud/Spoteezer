@@ -6,11 +6,11 @@ export default async function getUserById(userId: number): Promise<Partial<User>
 
     const sql = SQL`
         SELECT
-            uti.uti_id AS userid,
-            uti.uti_prenom AS prenom,
-            uti.uti_nom AS nom,
-            uti.uti_username AS username,
-            uti.uti_email AS email
+            uti.uti_id,
+            uti.uti_prenom,
+            uti.uti_nom,
+            uti.uti_username,
+            uti.uti_email
         FROM
             utilisateur_uti uti
         WHERE
