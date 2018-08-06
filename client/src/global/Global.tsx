@@ -41,7 +41,6 @@ export default class Global extends React.Component {
 
             await this.setCurrentUser()
 
-            this.setLoadingScreen()
         } catch (error) {
             console.log(error)
             this.setLoadingScreen()
@@ -54,7 +53,9 @@ export default class Global extends React.Component {
     let authentication: null | any = null
 
     authentication = await axios.get('http://localhost:8888/authenticate')
-    this.setState({currentUser: authentication.data.user)
+    this.setLoadingScreen()
+
+    this.setState({currentUser: authentication.data.user})
     }
 
     getCurrentUser = (): Partial<User> | null => {
