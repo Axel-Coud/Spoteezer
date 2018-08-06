@@ -17,6 +17,19 @@ export default class Login extends React.Component {
         // rememberCb: false
     }
 
+    onClickLoginButton = async (globalContext) => {
+        try {
+            await this.login()
+
+            globalContext.actions.setLoadingScreen()
+            await globalContext.actions.setCurrentUser()
+            globalContext.actions.setLoadingScreen()
+        } catch (error) {
+            console.log(error)
+            globalContext.actions.setLoadingScreen()
+        }
+    }
+
     isLoginValid = (username: string, password: string): boolean => {
         if (!username.length || !password.length) {
             notification.error({
@@ -95,7 +108,7 @@ export default class Login extends React.Component {
                         </Form.Item>
                         <Form.Item>
                             {/* <Checkbox>Se souvenir de moi</Checkbox> */}
-                            <a className="spz-login-forgot" href="#">forgot password ?</a><br/>
+                            <a className="spz-login-forgot" href="#">Mot de passe oublié ?</a><br/>
                             <GlobalContext.Consumer>
                                 {
                                     (global) => {
@@ -103,11 +116,8 @@ export default class Login extends React.Component {
                                         return <Button style={buttonStyle}
                                             size="large"
                                             type="primary"
-                                            onClick={ async () => {
-                                                await this.login()
-                                                await global.actions.setCurrentUser()
-                                            }}
-                                        >Sign In</Button>
+                                            onClick={() => this.onClickLoginButton(global)}
+                                        >Se connecter</Button>
                                     }
                                 }
                             </GlobalContext.Consumer>
@@ -116,7 +126,7 @@ export default class Login extends React.Component {
                                 size="large"
                                 type="dashed"
                                 onClick={() => this.setState({isSignUpVisible: true})}
-                            >Sign Up</Button>
+                            >Créer un compte</Button>
 
                             {/* Formulaire de création de compte */}
                             <SignUp
