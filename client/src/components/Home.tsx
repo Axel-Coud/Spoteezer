@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout, Menu, Breadcrumb, Icon } from 'antd'
 import {GlobalContext} from '../global/Global'
-import Header from './header/Header';
+import Header from './header/Header'
 
 const { Content, Footer, Sider } = Layout
 const SubMenu = Menu.SubMenu

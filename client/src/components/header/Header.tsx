@@ -1,7 +1,7 @@
-import { Component } from 'react'
+import React from 'react'
 import { Layout } from 'antd'
 
-export default class Header extends Component {
+export default class Header extends React.Component {
 
     render() {
         return (
