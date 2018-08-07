@@ -1,7 +1,7 @@
 import { SQL } from "sql-template-strings"
 import bcrypt from 'bcrypt'
 import pg from '../../db'
-import { UserToLog } from "../../router/routerLogin";
+import { UserToLog } from "../../router/routerSession";
 
 export default async function verifyUser(username: string, password: string): Promise<UserToLog> {
 
