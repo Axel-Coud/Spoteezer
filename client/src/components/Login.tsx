@@ -35,6 +35,11 @@ export default class Login extends React.Component {
         return true
     }
 
+    /**
+     * On prend les inputs et on les utilises comme identifiants de
+     * connection, renvoit un cookie via http qui est stocké dans le navigateur avec
+     * le token d'authentification dedans
+     */
     login = async (): Promise<void> => {
 
         const [ username, password ] = [ this.state.usernameInput, this.state.passwordInput ]
