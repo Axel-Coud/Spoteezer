@@ -10,9 +10,10 @@ interface GlobalActions {
     getCurrentUser(): Partial<User> | null
     setCurrentUser(): Promise<void>
     setLoadingScreen(): void
+    disconnectUser(): Promise<void>
 }
 
-interface Context {
+export interface GlobalContext {
     state: GlobalState
     actions: GlobalActions
 }
@@ -25,7 +26,7 @@ interface User {
     uti_username: string
 }
 
-export const GlobalContext = React.createContext({} as Context)
+export const GlobalContext = React.createContext({} as GlobalContext)
 
 export default class Global extends React.Component {
     state: GlobalState = {
@@ -48,8 +49,12 @@ export default class Global extends React.Component {
 
     }
 
-    setCurrentUser = async () => {
-    // On check la validité du token à l'initialisation de l'application
+    /**
+     * On check la validité du token tout en prenant
+     * grâce au dit token les informations de l'utilisateur car
+     * token contient le userId qui permet de les prendres
+     */
+    setCurrentUser = async (): Promise<void> => {
     let authentication: null | any = null
     authentication = await axios.get('http://localhost:8888/authenticate')
     this.setState({currentUser: authentication.data.user})
@@ -63,10 +68,16 @@ export default class Global extends React.Component {
         this.setState({loadingScreen: !this.state.loadingScreen})
     }
 
+    disconnectUser = async (): Promise<void> => {
+        await axios.get<void>('http://localhost:8888/endSession')
+        this.setState({currentUser: null})
+    }
+
     actions: GlobalActions = {
         getCurrentUser: this.getCurrentUser,
         setCurrentUser: this.setCurrentUser,
-        setLoadingScreen: this.setLoadingScreen
+        setLoadingScreen: this.setLoadingScreen,
+        disconnectUser: this.disconnectUser
     }
 
     render() {
