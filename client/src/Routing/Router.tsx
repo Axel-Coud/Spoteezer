@@ -10,7 +10,7 @@ export default class Router extends React.Component {
     render() {
         return(
             <BrowserRouter>
-                <div className="spz-login-page">
+                <div style={{height: '100%'}}>
                     <GlobalContext.Consumer>
                         {
                             (global) => {

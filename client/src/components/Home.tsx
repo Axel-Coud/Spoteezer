@@ -1,8 +1,9 @@
 import React from 'react'
 import { Layout, Menu, Breadcrumb, Icon } from 'antd'
 import {GlobalContext} from '../global/Global'
+import Header from './header/Header';
 
-const { Header, Content, Footer, Sider } = Layout
+const { Content, Footer, Sider } = Layout
 const SubMenu = Menu.SubMenu
 
 export default class Home extends React.Component {
@@ -51,7 +52,7 @@ export default class Home extends React.Component {
                 </Menu>
             </Sider>
             <Layout>
-                <Header style={{ background: '#fff', padding: 0 }} />
+                <Header/>
                 <Content style={{ margin: '0 16px' }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
                         <Breadcrumb.Item>Utilisateur</Breadcrumb.Item>

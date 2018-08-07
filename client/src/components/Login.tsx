@@ -83,61 +83,64 @@ export default class Login extends React.Component {
         }
 
         return(
-            <Row className="spz-login-page" type="flex" justify="center">
-                <Col xs={20} sm={18} md={14} lg ={10}>
-                    <Form className="spz-login-form">
-                        <img
-                            src="./images/spoteezerIcon.png"
-                            alt="icône du site"
-                            style={{width: "80px", height: "80px", marginBottom: 10}}
-                        />
-                        <Form.Item>
-                            <Input
-                                prefix={<Icon type="user" className="spz-form-icon" />}
-                                placeholder="Pseudonyme"
-                                onChange={(e) => this.setState({usernameInput: e.target.value})}
-                            />
-                        </Form.Item>
-                        <Form.Item>
-                            <Input
-                                prefix={<Icon type="lock" className="spz-form-icon" />}
-                                type="password"
-                                placeholder="Mot de passe"
-                                onChange={(e) => this.setState({passwordInput: e.target.value})}
-                            />
-                        </Form.Item>
-                        <Form.Item>
-                            {/* <Checkbox>Se souvenir de moi</Checkbox> */}
-                            <a className="spz-login-forgot" href="#">Mot de passe oublié ?</a><br/>
-                            <GlobalContext.Consumer>
-                                {
-                                    (global) => {
+            <div className="spz-login-page">
 
-                                        return <Button style={buttonStyle}
+                <Row className="spz-login-container" type="flex" justify="center">
+                    <Col xs={20} sm={18} md={14} lg ={10}>
+                        <Form className="spz-login-form">
+                            <img
+                                src="./images/spoteezerIcon.png"
+                                alt="icône du site"
+                                style={{width: "80px", height: "80px", marginBottom: 10}}
+                                />
+                            <Form.Item>
+                                <Input
+                                    prefix={<Icon type="user" className="spz-form-icon" />}
+                                    placeholder="Pseudonyme"
+                                    onChange={(e) => this.setState({usernameInput: e.target.value})}
+                                    />
+                            </Form.Item>
+                            <Form.Item>
+                                <Input
+                                    prefix={<Icon type="lock" className="spz-form-icon" />}
+                                    type="password"
+                                    placeholder="Mot de passe"
+                                    onChange={(e) => this.setState({passwordInput: e.target.value})}
+                                    />
+                            </Form.Item>
+                            <Form.Item>
+                                {/* <Checkbox>Se souvenir de moi</Checkbox> */}
+                                <a className="spz-login-forgot" href="#">Mot de passe oublié ?</a><br/>
+                                <GlobalContext.Consumer>
+                                    {
+                                        (global) => {
+
+                                            return <Button style={buttonStyle}
                                             size="large"
                                             type="primary"
                                             onClick={() => this.onClickLoginButton(global)}
-                                        >Se connecter</Button>
+                                            >Se connecter</Button>
+                                        }
                                     }
-                                }
-                            </GlobalContext.Consumer>
-                            <br/>
-                            <Button style={buttonStyle}
-                                size="large"
-                                type="dashed"
-                                onClick={() => this.setState({isSignUpVisible: true})}
-                            >Créer un compte</Button>
+                                </GlobalContext.Consumer>
+                                <br/>
+                                <Button style={buttonStyle}
+                                    size="large"
+                                    type="dashed"
+                                    onClick={() => this.setState({isSignUpVisible: true})}
+                                >Créer un compte</Button>
 
-                            {/* Formulaire de création de compte */}
-                            <SignUp
-                                toggleSignUpVisibility={this.toggleSignUpVisibility}
-                                isSignUpVisible={this.state.isSignUpVisible}
-                            />
+                                {/* Formulaire de création de compte */}
+                                <SignUp
+                                    toggleSignUpVisibility={this.toggleSignUpVisibility}
+                                    isSignUpVisible={this.state.isSignUpVisible}
+                                    />
 
-                        </Form.Item>
-                    </Form>
-                </Col>
-            </Row>
+                            </Form.Item>
+                        </Form>
+                    </Col>
+                </Row>
+            </div>
         )
     }
 }
