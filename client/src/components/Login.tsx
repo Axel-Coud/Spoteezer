@@ -58,7 +58,9 @@ export default class Login extends React.Component {
             })
             notification.success({
                 description: '',
-                message: data
+                message: data,
+                duration: 2,
+                icon: <Icon type="user" style={{color: '#53ff5d'}} />
             })
 
             // On fait en sorte de sortir la page principale de l'application(Router qui switch de login à autre chose ?)

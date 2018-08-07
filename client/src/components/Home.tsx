@@ -58,7 +58,10 @@ export default class Home extends React.Component {
                         <Breadcrumb.Item>Utilisateur</Breadcrumb.Item>
                         <Breadcrumb.Item>
                             <GlobalContext.Consumer>
-                                {(global) => global.actions.getCurrentUser()!.uti_prenom}
+                                {(global) => {
+                                    const user = global.actions.getCurrentUser()
+                                    return user ? user.uti_prenom : ''
+                                }}
                             </GlobalContext.Consumer>
                         </Breadcrumb.Item>
                     </Breadcrumb>
