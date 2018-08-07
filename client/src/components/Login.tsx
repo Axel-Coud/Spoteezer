@@ -4,17 +4,11 @@ import SignUp from './SignUp'
 import axios from 'axios'
 import { GlobalContext } from '../global/Global';
 
-// interface Inputs {
-//     usernameInput: string
-//     passwordInput: string
-// }
-
 export default class Login extends React.Component {
     state = {
         usernameInput: '',
         passwordInput: '',
         isSignUpVisible: false
-        // rememberCb: false
     }
 
     onClickLoginButton = async (globalContext) => {
