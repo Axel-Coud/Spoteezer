@@ -25,7 +25,8 @@ server.get('/authenticate', async (req, res) => {
     } catch (error) {
         console.log("Erreur dans l'authentication : " + error)
         return res.status(401).send({
-            authenticated: false
+            authenticated: false,
+            user: null
         })
     }
 
