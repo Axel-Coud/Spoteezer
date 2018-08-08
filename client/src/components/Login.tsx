@@ -63,9 +63,6 @@ export default class Login extends React.Component {
                 icon: <Icon type="user" style={{color: '#53ff5d'}} />
             })
 
-            // On fait en sorte de sortir la page principale de l'application(Router qui switch de login à autre chose ?)
-            // Check les cookie pour jwt ?
-
         } catch (error) {
             notification.error({
                 message: 'Erreur serveur',
