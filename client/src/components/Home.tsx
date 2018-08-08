@@ -2,18 +2,58 @@ import React from 'react'
 import { Layout, Menu, Breadcrumb, Icon } from 'antd'
 import {GlobalContext} from '../global/Global'
 import Header from './header/Header'
+import { ClickParam } from 'antd/lib/menu'
+import HomeContentRouter from '../Routing/HomeContentRouter'
+import Musique from './content/Musique'
+
+export interface MenuItem {
+    index: number
+    name: string
+    component: React.ComponentClass
+    playlistId?: number
+}
+
+interface HomeState {
+    collapsed: boolean
+    currentMenuIndex: number
+    menuItems: MenuItem[]
+}
 
 const { Content, Footer, Sider } = Layout
 const SubMenu = Menu.SubMenu
 
-export default class Home extends React.Component {
+export default class Home extends React.Component<{}, HomeState> {
     state = {
         collapsed: false,
-    };
+        currentMenuIndex: 1,
+        menuItems: []
+    }
 
-    onCollapse = (collapsed) => {
-        console.log(collapsed)
+    /**
+     * Will need to add playlist by iteration someday
+     */
+    componentDidMount() {
+        debugger
+        this.setState({menuItems: [{
+            index: 1,
+            name: 'musique',
+            component: Musique
+        }, {
+            index: 2,
+            name: 'import',
+            component: Musique
+        }]})
+    }
+
+    onCollapse = (collapsed): void => {
         this.setState({ collapsed })
+    }
+
+    /**
+     * Quand on click sur menu envoit la valeur de l'index au state local puis déclenche la callback pour swap d'UI dans content
+     */
+    onClickMenuItem = (e: ClickParam): void => {
+        this.setState({currentMenuIndex: parseInt(e.key)})
     }
 
     render() {
@@ -25,7 +65,12 @@ export default class Home extends React.Component {
                 onCollapse={this.onCollapse}
             >
                 <img src="./images/spoteezerIcon.png" className="spz-sider-logo" />
-                <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+                <Menu
+                    theme="dark"
+                    defaultSelectedKeys={['1']}
+                    mode="inline"
+                    onClick={(e) => this.onClickMenuItem(e)}
+                    >
                     <Menu.Item key="1">
                         <Icon type="caret-right" className="spz-home-layout-icon" />
                         <span>Musique</span>
@@ -47,7 +92,7 @@ export default class Home extends React.Component {
             <Layout>
                 <Header/>
                 <Content style={{ margin: '0 16px' }}>
-                    <Breadcrumb style={{ margin: '16px 0' }}>
+                    <Breadcrumb style={{ margin: '16px 0', textAlign: 'center' }}>
                         <Breadcrumb.Item>Utilisateur</Breadcrumb.Item>
                         <Breadcrumb.Item>
                             <GlobalContext.Consumer>
@@ -58,10 +103,7 @@ export default class Home extends React.Component {
                             </GlobalContext.Consumer>
                         </Breadcrumb.Item>
                     </Breadcrumb>
-                    <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-                        <h1>( ͡° ͜ʖ ͡°)</h1>
-                        <h2>Work in Progress</h2>
-                    </div>
+                    <HomeContentRouter currentMenuIndex={this.state.currentMenuIndex} menuItems={this.state.menuItems} />
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
                     Spoteezer ©2018
