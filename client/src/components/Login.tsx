@@ -60,7 +60,7 @@ export default class Login extends React.Component {
                 description: '',
                 message: data,
                 duration: 2,
-                icon: <Icon type="user" style={{color: '#53ff5d'}} />
+                icon: <Icon type="user" style={{color: '#30ce3a'}} />
             })
 
         } catch (error) {
