@@ -73,8 +73,8 @@
 }
 
 .spz-header {
-    background: '#fff'; 
-    padding: 15;
+    background-color: #ffffff !important; 
+    padding: 15px !important;
 }
 
 .spz-logout-button {

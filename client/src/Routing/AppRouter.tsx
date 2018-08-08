@@ -5,7 +5,7 @@ import LoadingScreen from '../components/LoadingScreen'
 import { BrowserRouter, Route, Redirect} from 'react-router-dom'
 import {GlobalContext} from '../global/Global'
 
-export default class Router extends React.Component {
+export default class AppRouter extends React.Component {
 
     render() {
         return(

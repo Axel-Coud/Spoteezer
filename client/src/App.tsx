@@ -1,12 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Router from './Routing/Router'
+import AppRouter from './Routing/AppRouter'
 import 'antd/dist/antd.css'
 import Global from './global/Global'
 
 ReactDOM.render(
     <Global>
-        <Router />
+        <AppRouter />
     </Global>,
     document.getElementById('root')
 )
