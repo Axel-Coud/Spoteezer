@@ -38,14 +38,7 @@ export default class Home extends React.Component {
                         <Menu.Item key="4">electro</Menu.Item>
                         <Menu.Item key="5">funk</Menu.Item>
                     </SubMenu>
-                    <SubMenu
-                        key="sub2"
-                        title={<span><Icon type="team" className="spz-home-layout-icon" /><span>Test</span></span>}
-                    >
-                        <Menu.Item key="6">Test 1</Menu.Item>
-                        <Menu.Item key="8">Test 2</Menu.Item>
-                    </SubMenu>
-                    <Menu.Item key="9">
+                    <Menu.Item key="2">
                         <Icon type="cloud-upload-o" className="spz-home-layout-icon" />
                         <span>Import</span>
                     </Menu.Item>
