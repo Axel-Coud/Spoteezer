@@ -71,3 +71,12 @@
     margin: 10px auto 10px auto;
     display: block;
 }
+
+.spz-header {
+    background: '#fff'; 
+    padding: 15;
+}
+
+.spz-logout-button {
+    margin-left: auto;
+}
