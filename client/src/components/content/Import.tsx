@@ -11,7 +11,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
         return (
             <>
                 <h2 style={{ textAlign: 'center' }}>Importer une musique</h2>
-                <div style={{ width: '80%', margin: 'auto' }}>
+                <div className="spz-import-form-container">
                     <Form>
                         <Form.Item>
                             {
@@ -25,7 +25,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                                     <Input
                                         prefix={<Icon type="tag-o" className="spz-form-icon" />}
                                         placeholder="Titre"
-                                        />
+                                    />
                                 )
                             }
                         </Form.Item>
