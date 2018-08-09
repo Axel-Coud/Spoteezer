@@ -24,7 +24,7 @@ const SubMenu = Menu.SubMenu
 
 export default class Home extends React.Component<{}, HomeState> {
     state = {
-        collapsed: false,
+        collapsed: true,
         currentMenuIndex: 1,
         menuItems: []
     }
