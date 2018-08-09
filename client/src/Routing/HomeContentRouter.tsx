@@ -16,12 +16,12 @@ export default class HomeContentRouter extends React.Component<{currentMenuIndex
 
         return (
             <BrowserRouter>
-            <div>
-                <Redirect to={routeToRedirect} />
-                {this.props.menuItems.map((menu, index) => {
-                    return <Route path={`/${menu.name}`} component={menu.component} playlistId={menu.playlistId} key={index} />
-                })}
-            </div>
+                <div style={{padding: 24, background: '#fff', minHeight: 360}}>
+                    <Redirect to={routeToRedirect} />
+                    {this.props.menuItems.map((menu, index) => {
+                        return <Route path={`/${menu.name}`} component={menu.component} playlistId={menu.playlistId} key={index} />
+                    })}
+                </div>
             </BrowserRouter>
         )
     }

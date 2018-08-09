@@ -5,6 +5,7 @@ import Header from './header/Header'
 import { ClickParam } from 'antd/lib/menu'
 import HomeContentRouter from '../Routing/HomeContentRouter'
 import Musique from './content/Musique'
+import Import from './content/Import'
 
 export interface MenuItem {
     index: number
@@ -33,16 +34,16 @@ export default class Home extends React.Component<{}, HomeState> {
      * Will need to add playlist by iteration someday
      */
     componentDidMount() {
-        debugger
         this.setState({menuItems: [{
-            index: 1,
-            name: 'musique',
-            component: Musique
-        }, {
-            index: 2,
-            name: 'import',
-            component: Musique
-        }]})
+                index: 1,
+                name: 'musique',
+                component: Musique
+            }, {
+                index: 2,
+                name: 'import',
+                component: Import
+            }]
+        })
     }
 
     onCollapse = (collapsed): void => {
