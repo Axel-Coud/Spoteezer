@@ -81,7 +81,13 @@
     margin-left: auto;
 }
 
+/* IMPORT CONTENT */
+
+.spz-import-title {
+    margin-bottom: 30px;
+}
+
 .spz-import-form-container {
-    width: '80%';
-    margin: 'auto';
+    width: 75%;
+    margin: auto;
 }
