@@ -17,7 +17,7 @@ interface FormValues {
 
 export default Form.create()(class Import extends React.Component<FormComponentProps, State> {
 
-    state = {
+    state: State = {
         fileList: []
     }
 
@@ -68,7 +68,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
         // On cast en FormValues car c'est ce qui est retourné dans les fait
         const formValues = getFieldsValue() as FormValues
 
-        formData.append('file', file)
+        formData.append('file', file.originFileObj!)
         formData.append('artiste', formValues.artiste)
         formData.append('titre', formValues.titre)
 
