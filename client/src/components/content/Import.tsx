@@ -4,6 +4,7 @@ import { FormComponentProps } from 'antd/lib/form'
 import { UploadProps } from 'antd/lib/upload'
 import { UploadFile, UploadChangeParam } from 'antd/lib/upload/interface'
 import axios from 'axios'
+import { GlobalContext } from '../../global/Global';
 
 interface State {
     fileList: UploadFile[]
@@ -178,12 +179,30 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                             }
                         </Form.Item>
                         <Form.Item>
-                            <Button
-                                type='primary'
-                                onClick={() => {
-                                    this.onClickUpload()
-                                }}
-                                >Uploader</Button>
+                            <GlobalContext.Consumer>
+                                {
+                                    (context) => {
+                                        return <Button
+                                                    type='primary'
+                                                    onClick={async () => {
+                                                        try {
+
+                                                            await context.actions.setCurrentUser()
+                                                        } catch (error) {
+
+                                                            notification.error({
+                                                                message: 'Session utilisateur expiré',
+                                                                description: 'Token invalide',
+                                                                duration: 2
+                                                            })
+                                                            return
+                                                        }
+                                                        this.onClickUpload()
+                                                    }}
+                                                >Uploader</Button>
+                                    }
+                                }
+                            </GlobalContext.Consumer>
                         </Form.Item>
                     </Form>
                 </div>

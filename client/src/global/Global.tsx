@@ -55,9 +55,14 @@ export default class Global extends React.Component {
      * token contient le userId qui permet de les prendres
      */
     setCurrentUser = async (): Promise<void> => {
-    let authentication: null | any = null
-    authentication = await axios.get('http://localhost:8888/auth')
-    this.setState({currentUser: authentication.data.user})
+        let authentication: null | any = null
+        try {
+            authentication = await axios.get('http://localhost:8888/auth')
+            this.setState({currentUser: authentication.data.user})
+        } catch (error) {
+            this.setState({currentUser: error.response.data.user})
+            throw new Error(`Utilisateur non authentifié`)
+        }
     }
 
     getCurrentUser = (): Partial<User> | null => {
