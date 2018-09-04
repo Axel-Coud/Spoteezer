@@ -17,7 +17,7 @@ server.use(validateToken)
 server.use(router)
 
 // Simple route to authenticate(used to tell if token is okay) by using validateToken middleware
-server.get('/authenticate', async (req, res) => {
+server.get('/auth', async (req, res) => {
 
     let user: null | Partial<User> = null
     try {

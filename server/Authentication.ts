@@ -4,7 +4,7 @@ import { Request, NextFunction, Response } from 'express'
 export default async function validateToken(req: Request, res: Response, next: NextFunction): Promise<void> {
 
     // Si l'utilisateur veut créer un compte ou se connecter on accepte sans token
-    if (req.originalUrl === '/users/add' || req.originalUrl === '/login' || req.originalUrl === '/authenticate') {
+    if (req.originalUrl === '/users/add' || req.originalUrl === '/login' || req.originalUrl === '/auth') {
 
         next()
     } else if (!req.cookies.token) {

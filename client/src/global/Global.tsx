@@ -56,7 +56,7 @@ export default class Global extends React.Component {
      */
     setCurrentUser = async (): Promise<void> => {
     let authentication: null | any = null
-    authentication = await axios.get('http://localhost:8888/authenticate')
+    authentication = await axios.get('http://localhost:8888/auth')
     this.setState({currentUser: authentication.data.user})
     }
 
