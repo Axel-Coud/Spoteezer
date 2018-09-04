@@ -30,7 +30,7 @@ router.post('/login', async (req, res) => {
 
 })
 
-router.get('/endSession', (req, res) => {
+router.get('/endSession', (_, res) => {
     res.clearCookie('token')
 
     res.status(200).send('token deleted')
