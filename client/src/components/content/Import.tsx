@@ -4,7 +4,7 @@ import { FormComponentProps } from 'antd/lib/form'
 import { UploadProps } from 'antd/lib/upload'
 import { UploadFile, UploadChangeParam } from 'antd/lib/upload/interface'
 import axios from 'axios'
-import { GlobalContext } from '../../global/Global';
+import { GlobalContext } from '../../global/Global'
 
 interface State {
     fileList: UploadFile[]
