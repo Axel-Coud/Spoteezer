@@ -2,12 +2,12 @@ import React from 'react'
 import { Form, Input, Icon, Upload, Button, notification } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import { UploadProps } from 'antd/lib/upload'
-import { UploadFile, UploadChangeParam } from 'antd/lib/upload/interface'
+import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface'
 import axios from 'axios'
 import { GlobalContext } from '../../global/Global'
 
 interface State {
-    fileList: File[]
+    fileList: UploadFile[]
 }
 
 interface FormValues {
@@ -79,14 +79,14 @@ export default Form.create()(class Import extends React.Component<FormComponentP
 
             const fileDuration = await this.getFileDuration(fileReader)
             debugger
-            formData.append('file', file)
+            formData.append('file', file.originFileObj!)
             formData.append('artist', formValues.artiste)
             formData.append('title', formValues.titre)
             formData.append('uploaderId', `${userId}`)
             formData.append('duration', fileDuration!)
 
             try {
-                const result = await axios({
+                await axios({
                     method: 'post',
                     url: 'http://localhost:8888/musics/add',
                     data: formData,
@@ -95,7 +95,6 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                         'Accept': 'application/json',
                     }
                 })
-                console.log(result)
             } catch (error) {
                 console.log(error)
                 notification.error({
@@ -105,12 +104,12 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                 return
             }
         }
-        fileReader.readAsArrayBuffer(file)
+        fileReader.readAsArrayBuffer(file.originFileObj!)
     }
 
     onChangeFile = (info: UploadChangeParam): void => {
-        const file = info.file
-
+        const file = info.fileList[info.fileList.length - 1]
+        debugger
         // On souhaite filtré si le fichier n'est pas au format audio accepté (mp3 etc...)
         if (file.type !== "audio/mp3") {
             notification.error({
