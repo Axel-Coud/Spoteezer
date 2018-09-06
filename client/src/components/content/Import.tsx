@@ -35,7 +35,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                 if (formErrors[key]) {
                     notification.error({
                         message: 'Erreur dans le formulaire',
-                        description: `Veuillez remplir tout les champs`
+                        description: `Veuillez correctement remplir tout les champs`
                     })
                     return false
                 }
@@ -55,7 +55,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
         return true
     }
 
-    onClickUpload = async (): Promise<void> => {
+    onClickUpload = async (userId: number): Promise<void> => {
         const formData = new FormData()
 
         const { getFieldsValue } = this.props.form
@@ -68,34 +68,39 @@ export default Form.create()(class Import extends React.Component<FormComponentP
 
         // On cast en FormValues car c'est ce qui est retourné dans les fait
         const formValues = getFieldsValue() as FormValues
+        const fileReader = new FileReader()
 
-        formData.append('file', file.originFileObj!)
-        formData.append('artiste', formValues.artiste)
-        formData.append('titre', formValues.titre)
+        fileReader.onloadend = async () => {
 
-        try {
-            const test = formData.entries()
-            for (const [key, value] of test) {
-                console.log(key, value);
-              }
-            const result = await axios({
-                method: 'post',
-                url: 'http://localhost:8888/musics/add',
-                data: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Accept': 'application/json',
-                }
-            })
-            console.log(result)
-        } catch (error) {
-            console.log(error)
-            notification.error({
-                message: 'Erreur interne',
-                description: error
-            })
-            return
+            const fileDuration = await this.getFileDuration(fileReader)
+            debugger
+            formData.append('file', file.originFileObj!)
+            formData.append('artist', formValues.artiste)
+            formData.append('title', formValues.titre)
+            formData.append('uploaderId', `${userId}`)
+            formData.append('duration', fileDuration!)
+
+            try {
+                const result = await axios({
+                    method: 'post',
+                    url: 'http://localhost:8888/musics/add',
+                    data: formData,
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Accept': 'application/json',
+                    }
+                })
+                console.log(result)
+            } catch (error) {
+                console.log(error)
+                notification.error({
+                    message: 'Erreur interne',
+                    description: error
+                })
+                return
+            }
         }
+        fileReader.readAsArrayBuffer(file.originFileObj!)
     }
 
     onChangeFile = (info: UploadChangeParam): void => {
@@ -120,6 +125,27 @@ export default Form.create()(class Import extends React.Component<FormComponentP
         })
     }
 
+    getFileDuration = async (fileReader: FileReader): Promise<string> => {
+        const audioDecoder = new AudioContext()
+        let fileDuration: null | string = null
+
+        const fileInfo = await audioDecoder.decodeAudioData(fileReader.result)
+        const duration = fileInfo.duration / 60
+        let minutes = duration.toString().split('.')[0]
+        const secondsAsMinutePercentage = 0 + '.' + duration!.toString().split('.')[1]
+        const unroundedSeconds = parseFloat(secondsAsMinutePercentage) * 60 / 100
+        const roundedSeconds = Math.round(unroundedSeconds * 100) / 100
+        const seconds = roundedSeconds.toString().split('.')[1]
+
+        if (minutes.length === 1) {
+            minutes = `0${minutes}`
+        }
+
+        fileDuration = `${minutes}:${seconds}`
+
+        return fileDuration
+    }
+
     render() {
 
         const { getFieldDecorator } = this.props.form
@@ -142,6 +168,8 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                                         required: true, message: 'Le champs est vide'
                                     }, {
                                         max: 80, message: 'limité à 80 caractères'
+                                    }, {
+                                        pattern: /^[a-zA-Z0-9 ]*$/, message: `Seulement caractères issus de l'alphabet, nombres et espaces acceptés`
                                     }]
                                 })(
                                     <Input
@@ -197,7 +225,8 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                                                             })
                                                             return
                                                         }
-                                                        this.onClickUpload()
+                                                        // @ts-ignore GetCurrentUser is 99% safe to not be null, since we need to be auth'd to be here
+                                                        this.onClickUpload(context.actions.getCurrentUser().uti_id)
                                                     }}
                                                 >Uploader</Button>
                                     }

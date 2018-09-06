@@ -1,5 +1,5 @@
 import SQL from 'sql-template-strings'
-// import pg from '../../db'
+import pg from '../../db'
 import fs from 'fs'
 import path from 'path'
 import { promisify } from 'util'
@@ -39,10 +39,12 @@ export default async function addMusic(musicFile: Express.Multer.File, infos: Mu
             ${uploadFolderPath},
             ${convertBytesToSize(musicFile.size)},
             ${infos.uploaderId}
-        ) RETURNING *
+        )
     `
 
-    debugger
+    await pg.query(insertQuery)
+
+    return
 }
 
 function convertBytesToSize(bytes: number): string {
@@ -56,7 +58,6 @@ function convertBytesToSize(bytes: number): string {
         return bytes + ' ' + sizes[i]
     }
     const convertedSize = (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i]
-    debugger
-    return convertedSize
 
+    return convertedSize
 }
