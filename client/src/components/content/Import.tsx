@@ -7,7 +7,7 @@ import axios from 'axios'
 import { GlobalContext } from '../../global/Global'
 
 interface State {
-    fileList: UploadFile[]
+    fileList: File[]
 }
 
 interface FormValues {
@@ -20,6 +20,11 @@ export default Form.create()(class Import extends React.Component<FormComponentP
 
     state: State = {
         fileList: []
+    }
+
+    // Cette fonction sert uniqument à ne pas déclencher de requête quand on ajoute un fichier dans le fileList(On fait les manipulation manuellement)
+    beforeUpload = () => {
+        return false
     }
 
     isFormValid = (): boolean => {
@@ -74,7 +79,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
 
             const fileDuration = await this.getFileDuration(fileReader)
             debugger
-            formData.append('file', file.originFileObj!)
+            formData.append('file', file)
             formData.append('artist', formValues.artiste)
             formData.append('title', formValues.titre)
             formData.append('uploaderId', `${userId}`)
@@ -100,7 +105,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                 return
             }
         }
-        fileReader.readAsArrayBuffer(file.originFileObj!)
+        fileReader.readAsArrayBuffer(file)
     }
 
     onChangeFile = (info: UploadChangeParam): void => {
@@ -153,7 +158,8 @@ export default Form.create()(class Import extends React.Component<FormComponentP
         const uploadProps: UploadProps = {
             accept: "audio/*",
             onChange: this.onChangeFile,
-            fileList: this.state.fileList
+            fileList: this.state.fileList,
+            beforeUpload: this.beforeUpload
         }
 
         return (
