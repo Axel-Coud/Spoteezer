@@ -110,15 +110,26 @@ export default Form.create()(class Import extends React.Component<FormComponentP
     onChangeFile = (info: UploadChangeParam): void => {
         const file = info.fileList[info.fileList.length - 1]
         debugger
-        // On souhaite filtré si le fichier n'est pas au format audio accepté (mp3 etc...)
-        if (file.type !== "audio/mp3") {
+
+        // On souhaite filtré si le fichier n'est pas au format audio accepté (mp3, mp4 etc...)
+        if (file.type !== "audio/mp3" && file.type !== "audio/mpeg") {
             notification.error({
                 message: "Impossible d'uploader",
                 description: "Ce n'est pas un fichier audio",
                 duration: 2
             })
 
-            return
+            return this.setState({fileList: []})
+        }
+
+        // On limite à 25MO la taille des fichier uploadable
+        if (file.size > 26210000)  {
+            notification.error({
+                message: "Impossible d'uploader",
+                description: "Dépasse le volume autorisé (max: 25MO)"
+            })
+
+            return this.setState({fileList: []})
         }
 
         // Si on ajoute un fichier celui devient la filelist entière car on en veut qu'un seul, sinon on remove
@@ -205,7 +216,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                                 getFieldDecorator('fichier')(
                                     <Upload {...uploadProps} >
                                         <Button style={{width: '100%'}}>
-                                            <Icon type="upload"/> Choisir le morceau
+                                            <Icon type="upload"/>Sélectionner...
                                         </Button>
                                     </Upload>
                                 )
