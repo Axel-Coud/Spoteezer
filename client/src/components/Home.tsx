@@ -10,7 +10,7 @@ import Import from './content/Import'
 export interface MenuItem {
     index: number
     name: string
-    component: React.ComponentClass
+    component: React.ComponentClass<any>
     playlistId?: number
 }
 

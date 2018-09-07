@@ -22,7 +22,6 @@ export default class Musique extends React.Component<Props, State> {
         })
         console.log(this.props)
 
-        debugger
         this.setState({ musicList: musicList.data })
     }
 
