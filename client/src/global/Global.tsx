@@ -6,9 +6,9 @@ interface GlobalState {
     loadingScreen: boolean
 }
 
-interface GlobalActions {
+export interface GlobalActions {
     getCurrentUser(): Partial<User> | null
-    setCurrentUser(): Promise<void>
+    verifyCurrentUser(): Promise<void>
     setLoadingScreen(): void
     disconnectUser(): Promise<void>
 }
@@ -39,7 +39,7 @@ export default class Global extends React.Component {
         try {
             // On set le loading screen pour ne pas avoir le component login d'afficher
             this.setLoadingScreen()
-            await this.setCurrentUser()
+            await this.verifyCurrentUser()
             this.setLoadingScreen()
 
         } catch (error) {
@@ -54,7 +54,7 @@ export default class Global extends React.Component {
      * grâce au dit token les informations de l'utilisateur car
      * token contient le userId qui permet de les prendres
      */
-    setCurrentUser = async (): Promise<void> => {
+    verifyCurrentUser = async (): Promise<void> => {
         let authentication: null | any = null
         try {
             authentication = await axios.get('http://localhost:8888/auth')
@@ -80,7 +80,7 @@ export default class Global extends React.Component {
 
     actions: GlobalActions = {
         getCurrentUser: this.getCurrentUser,
-        setCurrentUser: this.setCurrentUser,
+        verifyCurrentUser: this.verifyCurrentUser,
         setLoadingScreen: this.setLoadingScreen,
         disconnectUser: this.disconnectUser
     }

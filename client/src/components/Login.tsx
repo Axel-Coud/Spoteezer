@@ -16,7 +16,7 @@ export default class Login extends React.Component {
             await this.login()
 
             globalContext.actions.setLoadingScreen()
-            await globalContext.actions.setCurrentUser()
+            await globalContext.actions.verifyCurrentUser()
             globalContext.actions.setLoadingScreen()
         } catch (error) {
             console.log(error)

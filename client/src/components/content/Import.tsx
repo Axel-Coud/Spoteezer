@@ -231,7 +231,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                                                     onClick={async () => {
                                                         try {
 
-                                                            await context.actions.setCurrentUser()
+                                                            await context.actions.verifyCurrentUser()
                                                         } catch (error) {
 
                                                             notification.error({

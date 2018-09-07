@@ -30,7 +30,7 @@ export default class HomeContentRouter extends React.Component<{currentMenuIndex
                                                         {...props}
                                                         test={true}
                                                         playlistId={menu.playlistId}
-                                                        currentUser={global.actions.getCurrentUser()}
+                                                        globalActions={global.actions}
                                                     />}
                                 />
                             })}
