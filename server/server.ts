@@ -4,7 +4,7 @@ import router from './router/routerApex'
 import validateToken from './Authentication'
 import getUserFromToken from './controller/users/getUserFormToken'
 import cookieParser from 'cookie-parser'
-import { User } from './controller/users/addUser';
+import { User } from './controller/users/addUser'
 
 const server = express()
 
