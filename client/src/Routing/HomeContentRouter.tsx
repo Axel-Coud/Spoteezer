@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Redirect} from 'react-router-dom'
-import { MenuItem } from '../components/Home';
+import { MenuItem } from '../components/Home'
+import { GlobalContext } from '../global/Global'
 
 export default class HomeContentRouter extends React.Component<{currentMenuIndex: number, menuItems: MenuItem[]}> {
 
@@ -15,14 +16,29 @@ export default class HomeContentRouter extends React.Component<{currentMenuIndex
         const routeToRedirect = '/' + (selectedMenuItem ? selectedMenuItem.name : 'musique')
 
         return (
-            <BrowserRouter>
-                <div style={{padding: 24, background: '#fff', minHeight: 360}}>
-                    <Redirect to={routeToRedirect} />
-                    {this.props.menuItems.map((menu, index) => {
-                        return <Route path={`/${menu.name}`} component={menu.component} playlistId={menu.playlistId} key={index} />
-                    })}
-                </div>
-            </BrowserRouter>
+            <GlobalContext.Consumer>
+                {(global) => {
+                    return(
+                    <BrowserRouter>
+                        <div style={{padding: 24, background: '#fff', minHeight: 360}}>
+                            <Redirect to={routeToRedirect} />
+                            {this.props.menuItems.map((menu, index) => {
+                                // On utilise la pattern 'render' pour pouvoir envoyer des props, en l'occurence les informations du user
+                                return <Route path={`/${menu.name}`}
+                                key={index}
+                                render={(props) => <menu.component
+                                                        {...props}
+                                                        test={true}
+                                                        playlistId={menu.playlistId}
+                                                        currentUser={global.actions.getCurrentUser()}
+                                                    />}
+                                />
+                            })}
+                        </div>
+                    </BrowserRouter>
+                    )
+                }}
+            </GlobalContext.Consumer>
         )
     }
 }
