@@ -57,7 +57,7 @@ export default class Global extends React.Component {
     verifyCurrentUser = async (): Promise<void> => {
         let authentication: null | any = null
         try {
-            authentication = await axios.get('http://localhost:8888/auth')
+            authentication = await axios.get('http://localhost:8889/auth')
             this.setState({currentUser: authentication.data.user})
         } catch (error) {
             this.setState({currentUser: error.response.data.user})
@@ -74,7 +74,7 @@ export default class Global extends React.Component {
     }
 
     disconnectUser = async (): Promise<void> => {
-        await axios.get<void>('http://localhost:8888/endSession')
+        await axios.get<void>('http://localhost:8889/endSession')
         this.setState({currentUser: null})
     }
 

@@ -78,7 +78,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
         fileReader.onloadend = async () => {
 
             const fileDuration = await this.getFileDuration(fileReader)
-            debugger
+
             formData.append('file', file.originFileObj!)
             formData.append('artist', formValues.artiste)
             formData.append('title', formValues.titre)
@@ -88,7 +88,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
             try {
                 await axios({
                     method: 'post',
-                    url: 'http://localhost:8888/musics/add',
+                    url: 'http://localhost:8889/musics/add',
                     data: formData,
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -99,7 +99,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                 console.log(error)
                 notification.error({
                     message: 'Erreur interne',
-                    description: error
+                    description: error.message
                 })
                 return
             }
@@ -109,7 +109,6 @@ export default Form.create()(class Import extends React.Component<FormComponentP
 
     onChangeFile = (info: UploadChangeParam): void => {
         const file = info.fileList[info.fileList.length - 1]
-        debugger
 
         // On souhaite filtré si le fichier n'est pas au format audio accepté (mp3, mp4 etc...)
         if (file.type !== "audio/mp3" && file.type !== "audio/mpeg") {

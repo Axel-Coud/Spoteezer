@@ -35,7 +35,7 @@ export default Form.create()(class SignUp extends React.Component<{
         try {
             await axios({
                 method: 'post',
-                url: 'http://localhost:8888/users/add',
+                url: 'http://localhost:8889/users/add',
                 data: {
                     email: values.email,
                     pseudo: values.username,

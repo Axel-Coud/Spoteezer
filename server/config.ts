@@ -15,7 +15,7 @@ interface DbConfig {
 }
 
 const config: Config = {
-    port: 8888,
+    port: 8889,
     dbConfig: {
         user: 'postgres',
         host: 'localhost',
