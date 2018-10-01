@@ -21,6 +21,7 @@
         ],
         "no-object-literal-type-assertion": false,
         "no-string-literal": false,
-        "radix": false
+        "radix": false,
+        "array-type": false
     }
 }
