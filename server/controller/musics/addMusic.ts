@@ -21,7 +21,7 @@ export interface MusicInfos {
 export default async function addMusic(musicFile: Express.Multer.File, infos: MusicInfos): Promise<void> {
 
     const uploadFolderPath = path.join(__dirname, '../..', 'uploadBucket', infos.title + '.mp3')
-    debugger
+
     await writeFile(uploadFolderPath, musicFile.buffer)
 
     const insertQuery = SQL`

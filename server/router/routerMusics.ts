@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import multer from 'multer'
 import addMusic, { MusicInfos } from '../controller/musics/addMusic'
-import getAllMusic, { Music } from '../controller/musics/getAllMusic';
+import getAllMusic from '../controller/musics/getAllMusic'
+import getOneMusic, { Music } from '../controller/musics/getOneMusic'
 
 const router = Router()
 
@@ -31,13 +32,25 @@ router.get('/all', async (_, res) => {
     let musicList: null | Music[] = null
 
     try {
-        // GET ALL MODULE
         musicList = await getAllMusic()
     } catch (error) {
         return res.status(401).send("Échec get all music : " + error)
     }
 
     return res.status(200).send(musicList)
+})
+
+router.get('/download', async (req, res) => {
+
+    let musicFile: null | {musicInfos: Music} & {file: Buffer} = null
+
+    try {
+        musicFile = await getOneMusic(req.query.musId)
+    } catch (error) {
+        return res.status(500).json(error.message)
+    }
+
+    res.status(200).download(musicFile.musicInfos.filepath)
 })
 
 export default router

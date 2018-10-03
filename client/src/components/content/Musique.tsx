@@ -1,6 +1,6 @@
 import React from 'react'
 import axios, { AxiosResponse } from 'axios'
-import { Music } from '../../../../server/controller/musics/getAllMusic'
+import { Music } from '../../../../server/controller/musics/getOneMusic'
 import { Table, Icon, Divider, notification } from 'antd'
 import { GlobalActions } from '../../global/Global'
 import { ColumnProps } from 'antd/lib/table'
@@ -37,12 +37,27 @@ export default class Musique extends React.Component<Props, State> {
             return
         }
 
-        // Ce map est uniquement là pour mettre des prorpiétés 'key' par conventions de antd à chaque data
-        const test = musicList.data.map((item, index) => {
-            return { ...item, key: index }
+        // Ce map est uniquement là pour mettre des propriétés 'key' par conventions de antd à chaque data
+        const test = musicList.data.map((item) => {
+            return { ...item, key: item.musId }
         })
 
         this.setState({ musicList: test })
+    }
+
+    /**
+     * Download une musique depuis le serveur en fonction de l'id envoyée en paramètre
+     * @param musId Id de la musique à supprimer
+     */
+    async downloadTrack(musId: number): Promise<void> {
+        try {
+            window.open('http://localhost:8889/musics/download?musId=' + musId)
+        } catch (error) {
+            notification.error({
+                message: 'Erreur interne',
+                description: error.response.data ? error.response.data : error.message
+            })
+        }
     }
 
     render() {
@@ -53,7 +68,6 @@ export default class Musique extends React.Component<Props, State> {
                 return (<span>
                     <Icon type="play-circle" />
                 </span>)
-
             }
         }, {
             title: 'Titre',
@@ -80,8 +94,8 @@ export default class Musique extends React.Component<Props, State> {
 
             return (
                 <span>
-                    <a onClick={this.doShit}><Icon type="download" /></a>
-                    {this.props.globalActions.getCurrentUser()!.uti_id ? deleteElement : ''}
+                    <a onClick={() => this.downloadTrack(record.musId)}><Icon type="download" /></a>
+                    {this.props.globalActions.getCurrentUser()!.uti_id === record.uploaderId ? deleteElement : ''}
                 </span>)
             }
         }]
