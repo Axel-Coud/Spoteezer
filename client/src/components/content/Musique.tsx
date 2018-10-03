@@ -86,6 +86,8 @@ export default class Musique extends React.Component<Props, State> {
             key: 'actions',
             render: (_, record) => {
 
+            const currentUser = this.props.globalActions.getCurrentUser()
+
             const deleteElement =
                 (<span>
                     <Divider type="vertical" />
@@ -95,7 +97,7 @@ export default class Musique extends React.Component<Props, State> {
             return (
                 <span>
                     <a onClick={() => this.downloadTrack(record.musId)}><Icon type="download" /></a>
-                    {this.props.globalActions.getCurrentUser()!.uti_id === record.uploaderId ? deleteElement : ''}
+                    {currentUser && currentUser.uti_id === record.uploaderId ? deleteElement : ''}
                 </span>)
             }
         }]
