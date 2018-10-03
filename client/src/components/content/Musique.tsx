@@ -47,13 +47,32 @@ export default class Musique extends React.Component<Props, State> {
 
     /**
      * Download une musique depuis le serveur en fonction de l'id envoyée en paramètre
-     * @param musId Id de la musique à supprimer
+     * @param musId Id de la musique à télécharger
      */
     async downloadTrack(musId: number): Promise<void> {
         try {
             window.open('http://localhost:8889/musics/download?musId=' + musId)
         } catch (error) {
-            notification.error({
+            return notification.error({
+                message: 'Erreur interne',
+                description: error.response.data ? error.response.data : error.message
+            })
+        }
+    }
+
+    /**
+     * Supprime une musique dans la base de donnée en fonction de l'id envoyée en paramètre
+     * @param musId Id de la musique à supprimer
+     */
+    async deleteTrack(musId: number): Promise<void> {
+        try {
+            // axios.delete('http://localhost:8889/musics/delete', {
+            //     params: {
+            //         musId
+            //     }
+            // })
+        } catch (error) {
+            return notification.error({
                 message: 'Erreur interne',
                 description: error.response.data ? error.response.data : error.message
             })
@@ -91,7 +110,7 @@ export default class Musique extends React.Component<Props, State> {
             const deleteElement =
                 (<span>
                     <Divider type="vertical" />
-                    <a onClick={this.placeholder}><Icon type="close" /></a>
+                    <a onClick={() => this.deleteTrack(record.musId)}><Icon type="close" /></a>
                 </span>)
 
             return (
