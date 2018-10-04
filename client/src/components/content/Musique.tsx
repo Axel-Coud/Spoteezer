@@ -55,7 +55,7 @@ export default class Musique extends React.Component<Props, State> {
         } catch (error) {
             return notification.error({
                 message: 'Erreur interne',
-                description: error.response.data ? error.response.data : error.message
+                description: error.response && error.response.data ? error.response.data : error.message
             })
         }
     }
@@ -66,17 +66,28 @@ export default class Musique extends React.Component<Props, State> {
      */
     async deleteTrack(musId: number): Promise<void> {
         try {
-            // axios.delete('http://localhost:8889/musics/delete', {
-            //     params: {
-            //         musId
-            //     }
-            // })
+            await axios.delete('http://localhost:8889/musics/delete', {
+                params: {
+                    musId
+                }
+            })
         } catch (error) {
             return notification.error({
                 message: 'Erreur interne',
-                description: error.response.data ? error.response.data : error.message
+                description: error.response && error.response.data ? error.response.data : error.message
             })
         }
+
+        const updatedMusicList = this.state.musicList.filter((item) => {
+            return item.musId !== musId
+        })
+
+        notification.success({
+            message: 'Musique supprimée avec succès',
+            description: ''
+        })
+
+        this.setState({musicList: updatedMusicList})
     }
 
     render() {

@@ -3,6 +3,7 @@ import multer from 'multer'
 import addMusic, { MusicInfos } from '../controller/musics/addMusic'
 import getAllMusic from '../controller/musics/getAllMusic'
 import getOneMusic, { Music } from '../controller/musics/getOneMusic'
+import deleteMusic from '../controller/musics/deleteMusic';
 
 const router = Router()
 
@@ -51,6 +52,17 @@ router.get('/download', async (req, res) => {
     }
 
     res.status(200).download(musicFile.musicInfos.filepath)
+})
+
+router.delete('/delete', async (req, res) => {
+
+    try {
+        await deleteMusic(req.query.musId)
+    } catch (error) {
+        return res.status(500).json(error.message)
+    }
+
+    res.status(200).json()
 })
 
 export default router
