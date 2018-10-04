@@ -10,13 +10,17 @@ interface Props {
 }
 
 interface State {
-    musicList: Music[]
+    musicList: Music[],
+    audioSource: string
 }
 
 export default class Musique extends React.Component<Props, State> {
     state: State = {
-        musicList: []
+        musicList: [],
+        audioSource: ''
     }
+
+    audioRef = React.createRef<HTMLAudioElement>()
 
     async componentDidMount() {
 
@@ -43,6 +47,29 @@ export default class Musique extends React.Component<Props, State> {
         })
 
         this.setState({ musicList: test })
+    }
+
+    async playTrack(musId: number): Promise<void> {
+
+        let music: null | AxiosResponse<Buffer> = null
+
+        try {
+            music = await axios.get('http://localhost:8889/musics/', {
+                params: {
+                    musId
+                },
+                responseType: 'blob'
+            })
+        } catch (error) {
+            debugger
+            return
+        }
+        const url = URL.createObjectURL(music.data)
+        this.setState({audioSource: url}, () => {
+            this.audioRef.current.pause()
+            this.audioRef.current.load()
+            this.audioRef.current.play()
+        })
     }
 
     /**
@@ -94,9 +121,9 @@ export default class Musique extends React.Component<Props, State> {
         const columns: ColumnProps<Music>[] = [{
             title: '',
             key: 'play',
-            render: () => {
+            render: (_, record) => {
                 return (<span>
-                    <Icon type="play-circle" />
+                    <a onClick={() => this.playTrack(record.musId)}><Icon type="play-circle" /></a>
                 </span>)
             }
         }, {
@@ -132,6 +159,11 @@ export default class Musique extends React.Component<Props, State> {
             }
         }]
 
-        return <Table columns={columns} dataSource={this.state.musicList} />
+        return (<>
+        <Table columns={columns} dataSource={this.state.musicList} />
+        <audio controls={true} ref={this.audioRef}>
+            <source src={this.state.audioSource} type='audio/mp3'></source>
+        </audio>
+        </>)
     }
 }

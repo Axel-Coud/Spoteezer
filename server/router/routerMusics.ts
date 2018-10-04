@@ -3,12 +3,25 @@ import multer from 'multer'
 import addMusic, { MusicInfos } from '../controller/musics/addMusic'
 import getAllMusic from '../controller/musics/getAllMusic'
 import getOneMusic, { Music } from '../controller/musics/getOneMusic'
-import deleteMusic from '../controller/musics/deleteMusic';
+import deleteMusic from '../controller/musics/deleteMusic'
 
 const router = Router()
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage })
+
+router.get('/', async (req, res) => {
+
+    let music: null | string = null
+    try {
+       music = (await getOneMusic(req.query.musId)).musicInfos.filepath
+    } catch (error) {
+        return res.status(500).json(error.message)
+    }
+
+    res.set({ 'Content-Type': 'audio/mp3'})
+    return res.status(200).sendFile(music)
+})
 
 router.post('/add', upload.single('file'), async (req, res) => {
 
