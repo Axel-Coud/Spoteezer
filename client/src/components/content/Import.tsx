@@ -184,7 +184,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                                     }, {
                                         max: 80, message: 'limité à 80 caractères'
                                     }, {
-                                        pattern: /^[a-zA-Z0-9 ]*$/, message: `Seulement caractères issus de l'alphabet, nombres et espaces acceptés`
+                                        pattern: /^[a-zA-Z0-9& ]*$/, message: `Seulement caractères issus de l'alphabet, nombres et espaces acceptés`
                                     }]
                                 })(
                                     <Input
