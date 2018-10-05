@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout, notification, Button, Tooltip } from 'antd'
-import { GlobalContext } from '../../global/Global';
+import { GlobalContext } from '../../global/Global'
 
 export default class Header extends React.Component {
 
@@ -20,19 +20,24 @@ export default class Header extends React.Component {
     render() {
         return (
             <Layout.Header className="spz-header">
-                <div style={{display: 'flex'}}>
+                <div style={{display: 'flex', position: 'relative'}}>
 
                     <GlobalContext.Consumer>
                         {(global) => {
                             return (
-                                <Tooltip placement="leftBottom" title="Se déconnecter">
-                                    <Button type="primary"
-                                    shape="circle"
-                                    icon="poweroff"
-                                    onClick={() => this.onClickDeco(global)}
-                                    className='spz-logout-button'
-                                    />
-                                </Tooltip>
+                                <>
+                                    <audio className="spz-audio-reader" controls={true} ref={global.state.audioReader}>
+                                        <source src={global.state.audioSource} type='audio/mp3'></source>
+                                    </audio>
+                                    <Tooltip title="Se déconnecter">
+                                        <Button type="primary"
+                                        shape="circle"
+                                        icon="poweroff"
+                                        onClick={() => this.onClickDeco(global)}
+                                        className='spz-logout-button'
+                                        />
+                                    </Tooltip>
+                                </>
                             )
                         }}
                     </GlobalContext.Consumer>

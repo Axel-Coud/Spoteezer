@@ -91,3 +91,10 @@
     width: 75%;
     margin: auto;
 }
+
+/* AUDIO READER */
+
+.spz-audio-reader {
+    position: absolute;
+    bottom: -12px;
+}

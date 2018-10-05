@@ -65,11 +65,7 @@ export default class Musique extends React.Component<Props, State> {
             return
         }
         const url = URL.createObjectURL(music.data)
-        this.setState({audioSource: url}, () => {
-            this.audioRef.current.pause()
-            this.audioRef.current.load()
-            this.audioRef.current.play()
-        })
+        this.props.globalActions.setAudioSource(url, this.props.globalActions.getAudioReader().current)
     }
 
     /**
@@ -161,9 +157,6 @@ export default class Musique extends React.Component<Props, State> {
 
         return (<>
         <Table columns={columns} dataSource={this.state.musicList} />
-        <audio controls={true} ref={this.audioRef}>
-            <source src={this.state.audioSource} type='audio/mp3'></source>
-        </audio>
         </>)
     }
 }

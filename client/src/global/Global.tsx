@@ -4,6 +4,8 @@ import axios from 'axios'
 interface GlobalState {
     currentUser: Partial<User> | null
     loadingScreen: boolean
+    audioSource: string
+    audioReader: React.RefObject<HTMLAudioElement>
 }
 
 export interface GlobalActions {
@@ -11,6 +13,8 @@ export interface GlobalActions {
     verifyCurrentUser(): Promise<void>
     setLoadingScreen(): void
     disconnectUser(): Promise<void>
+    setAudioSource(audioSource: string, audioReader: HTMLAudioElement): void
+    getAudioReader(): React.RefObject<HTMLAudioElement>
 }
 
 export interface GlobalContext {
@@ -31,7 +35,9 @@ export const GlobalContext = React.createContext({} as GlobalContext)
 export default class Global extends React.Component {
     state: GlobalState = {
         currentUser: null,
-        loadingScreen: false
+        loadingScreen: false,
+        audioSource: '',
+        audioReader: React.createRef<HTMLAudioElement>()
     }
 
     async componentDidMount() {
@@ -78,11 +84,32 @@ export default class Global extends React.Component {
         this.setState({currentUser: null})
     }
 
+    /**
+     * Update l'audio reader avec une nouvelle musique et la joue
+     * @param audioSource blobUrl built with URL.createObjectUrl(blob)
+     * @param audioReader
+     */
+    setAudioSource = (audioSource: string, audioReader: HTMLAudioElement): void => {
+        this.setState({
+            audioSource
+        }, () => {
+        audioReader.pause()
+        audioReader.load()
+        audioReader.play()
+        })
+    }
+
+    getAudioReader = () => {
+        return this.state.audioReader
+    }
+
     actions: GlobalActions = {
         getCurrentUser: this.getCurrentUser,
         verifyCurrentUser: this.verifyCurrentUser,
         setLoadingScreen: this.setLoadingScreen,
-        disconnectUser: this.disconnectUser
+        disconnectUser: this.disconnectUser,
+        setAudioSource: this.setAudioSource,
+        getAudioReader: this.getAudioReader
     }
 
     render() {
