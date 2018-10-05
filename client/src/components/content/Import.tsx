@@ -148,7 +148,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
         let minutes = duration.toString().split('.')[0]
         const secondsAsMinutePercentage = 0 + '.' + duration!.toString().split('.')[1]
         const unroundedSeconds = parseFloat(secondsAsMinutePercentage) * 60 / 100
-        const roundedSeconds = Math.round(unroundedSeconds * 100) / 100
+        const roundedSeconds = Math.floor(unroundedSeconds * 100) / 100
         const seconds = roundedSeconds.toString().split('.')[1]
 
         if (minutes.length === 1) {
