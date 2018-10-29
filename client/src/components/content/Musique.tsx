@@ -42,11 +42,11 @@ export default class Musique extends React.Component<Props, State> {
         }
 
         // Ce map est uniquement là pour mettre des propriétés 'key' par conventions de antd à chaque data
-        const test = musicList.data.map((item) => {
+        const list = musicList.data.map((item) => {
             return { ...item, key: item.musId }
         })
 
-        this.setState({ musicList: test })
+        this.setState({ musicList: list })
     }
 
     async playTrack(musId: number): Promise<void> {
