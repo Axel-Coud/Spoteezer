@@ -61,8 +61,11 @@ export default class Musique extends React.Component<Props, State> {
                 responseType: 'blob'
             })
         } catch (error) {
-            debugger
-            return
+            return notification.error({
+                message: 'Erreur interne',
+                description: error.message,
+                duration: 2
+            })
         }
         const url = URL.createObjectURL(music.data)
         this.props.globalActions.setAudioSource(url, this.props.globalActions.getAudioReader().current)
