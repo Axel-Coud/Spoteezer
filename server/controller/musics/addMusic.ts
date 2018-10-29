@@ -20,9 +20,13 @@ export interface MusicInfos {
  */
 export default async function addMusic(musicFile: Express.Multer.File, infos: MusicInfos): Promise<void> {
 
-    const uploadFolderPath = path.join(__dirname, '../..', 'uploadBucket', infos.title + '.mp3')
+    const uploadPath = path.join(__dirname, '../..', 'uploadBucket', infos.title + '.mp3')
 
-    await writeFile(uploadFolderPath, musicFile.buffer)
+    if (fs.existsSync(uploadPath)) {
+        throw new Error(`Cette musique existe déjà dans l'application (${infos.title})`)
+    }
+
+    await writeFile(uploadPath, musicFile.buffer)
 
     const insertQuery = SQL`
         INSERT INTO musique_mus (
@@ -36,7 +40,7 @@ export default async function addMusic(musicFile: Express.Multer.File, infos: Mu
             ${infos.title},
             ${infos.artist},
             ${infos.length},
-            ${uploadFolderPath},
+            ${uploadPath},
             ${convertBytesToSize(musicFile.size)},
             ${infos.uploaderId}
         )

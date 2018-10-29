@@ -95,23 +95,33 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                         'Accept': 'application/json',
                     }
                 })
+                notification.success({
+                    message: 'Musique ajouté avec succès',
+                    description: '',
+                    duration: 2
+                })
             } catch (error) {
-                console.log(error)
                 notification.error({
                     message: 'Erreur interne',
-                    description: error.message
+                    description: error.response && error.response.data ? error.response.data : error.message
                 })
-                return
             }
         }
         fileReader.readAsArrayBuffer(file.originFileObj!)
+
     }
 
     onChangeFile = (info: UploadChangeParam): void => {
+        // Dans l'api ANTD, seul info.filelist possède la propriété originFileObj nécessaire à l'upload, pas info.file
         const file = info.fileList[info.fileList.length - 1]
+        const newFile = info.file
+
+        if (newFile.status === 'removed') {
+            return this.setState({fileList: []})
+        }
 
         // On souhaite filtré si le fichier n'est pas au format audio accepté (mp3, mp4 etc...)
-        if (file.type !== "audio/mp3" && file.type !== "audio/mpeg") {
+        if (newFile.type !== "audio/mp3" && newFile.type !== "audio/mpeg") {
             notification.error({
                 message: "Impossible d'uploader",
                 description: "Ce n'est pas un fichier audio",
@@ -122,7 +132,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
         }
 
         // On limite à 25MO la taille des fichier uploadable
-        if (file.size > 26210000)  {
+        if (newFile.size > 26210000)  {
             notification.error({
                 message: "Impossible d'uploader",
                 description: "Dépasse le volume autorisé (max: 25MO)"
@@ -131,11 +141,9 @@ export default Form.create()(class Import extends React.Component<FormComponentP
             return this.setState({fileList: []})
         }
 
-        // Si on ajoute un fichier celui devient la filelist entière car on en veut qu'un seul, sinon on remove
-        const fileList = file.status === 'removed'  ? [] : [file]
-
-        this.setState({
-            fileList
+        // Si on ajoute un fichier celui ci devient la filelist entière car on en veut qu'un seul
+        return this.setState({
+            fileList: [file]
         })
     }
 
@@ -229,16 +237,13 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                                                     type='primary'
                                                     onClick={async () => {
                                                         try {
-
                                                             await context.actions.verifyCurrentUser()
                                                         } catch (error) {
-
                                                             notification.error({
                                                                 message: 'Session utilisateur expiré',
                                                                 description: 'Token invalide',
                                                                 duration: 2
                                                             })
-                                                            return
                                                         }
                                                         // @ts-ignore GetCurrentUser is 99% safe to not be null, since we need to be auth'd to be here
                                                         this.onClickUpload(context.actions.getCurrentUser().uti_id)
