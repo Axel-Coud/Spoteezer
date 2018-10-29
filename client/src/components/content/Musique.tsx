@@ -67,8 +67,11 @@ export default class Musique extends React.Component<Props, State> {
                 duration: 2
             })
         }
+        const audioReader = this.props.globalActions.getAudioReader()
         const url = URL.createObjectURL(music.data)
-        this.props.globalActions.setAudioSource(url, this.props.globalActions.getAudioReader().current)
+        if (audioReader.current) {
+            this.props.globalActions.setAudioSource(url, audioReader.current)
+        }
     }
 
     /**
