@@ -20,7 +20,7 @@ export default async function validateToken(req: Request, res: Response, next: N
                 console.log("JSON web token invalide pour ", req.originalUrl, " : " , err)
                 return res.redirect('/')
             }
-            console.log('/--/Token validé')
+            console.log('/--/Token validé pour la route : ' + req.originalUrl)
             next()
         })
 
