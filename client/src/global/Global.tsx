@@ -93,9 +93,12 @@ export default class Global extends React.Component {
         this.setState({
             audioSource
         }, () => {
-        audioReader.pause()
-        audioReader.load()
-        audioReader.play()
+            audioReader.pause()
+            audioReader.load()
+            audioReader.play()
+            audioReader.onended = (_) => {
+                console.log("la musique s'est finie");
+            }
         })
     }
 
