@@ -1,7 +1,7 @@
 import React from 'react'
 import axios, { AxiosResponse } from 'axios'
-import { Music } from '../../../../server/controller/musics/getOneMusic'
-import { Table, Icon, Divider, notification } from 'antd'
+import { ListMusic } from '../../../../server/controller/musics/getAllMusic'
+import { Table, Icon, Divider, notification, Tooltip } from 'antd'
 import { GlobalActions } from '../../global/Global'
 import { ColumnProps } from 'antd/lib/table'
 
@@ -10,7 +10,7 @@ interface Props {
 }
 
 interface State {
-    musicList: Music[],
+    musicList: ListMusic[],
     audioSource: string
 }
 
@@ -27,9 +27,13 @@ export default class Musique extends React.Component<Props, State> {
         let musicList: null | AxiosResponse<any> = null
         try {
             await this.props.globalActions.verifyCurrentUser()
+            const currentUser = this.props.globalActions.getCurrentUser()
             musicList = await axios({
                 method: 'get',
-                url: 'http://localhost:8889/musics/all'
+                url: 'http://localhost:8889/musics/all',
+                params: {
+                    userId: currentUser!.uti_id
+                }
             })
         } catch (error) {
 
@@ -80,6 +84,7 @@ export default class Musique extends React.Component<Props, State> {
      */
     async downloadTrack(musId: number): Promise<void> {
         try {
+            await this.props.globalActions.verifyCurrentUser()
             window.open('http://localhost:8889/musics/download?musId=' + musId)
         } catch (error) {
             return notification.error({
@@ -95,6 +100,7 @@ export default class Musique extends React.Component<Props, State> {
      */
     async deleteTrack(musId: number): Promise<void> {
         try {
+            await this.props.globalActions.verifyCurrentUser()
             await axios.delete('http://localhost:8889/musics/delete', {
                 params: {
                     musId
@@ -119,8 +125,44 @@ export default class Musique extends React.Component<Props, State> {
         this.setState({musicList: updatedMusicList})
     }
 
+    /**
+     * Toggle on/off du like sur une musique donnée
+     * @param trackId Identifiant de la musique
+     * @param userId Identifiant de l'utilisateur
+     */
+    async toggleLike(trackId: number, userId: number): Promise<void> {
+
+        let toggled: null | AxiosResponse<'liked' | 'unliked'>
+        try {
+            await this.props.globalActions.verifyCurrentUser()
+            toggled = await axios.post('http://localhost:8889/musics/toggleLike', {
+                trackId,
+                userId
+            })
+
+        } catch (error) {
+            notification.error({
+                message: 'Erreur interne',
+                description: error.response && error.response.data ? error.response.data : error.message
+            })
+        }
+
+        const updatedMusicList = this.state.musicList.map((music) => {
+            if (music.musId === trackId) {
+                return {
+                    ...music,
+                    likedByUser: !music.likedByUser,
+                    likes: toggled!.data === 'liked' ? ++music.likes : --music.likes
+                }
+            }
+            return music
+        })
+
+        return this.setState({musicList: updatedMusicList})
+    }
+
     render() {
-        const columns: ColumnProps<Music>[] = [{
+        const columns: ColumnProps<ListMusic>[] = [{
             title: '',
             key: 'play',
             render: (_, record) => {
@@ -148,14 +190,25 @@ export default class Musique extends React.Component<Props, State> {
             const currentUser = this.props.globalActions.getCurrentUser()
 
             const deleteElement =
-                (<span>
-                    <Divider type="vertical" />
-                    <a onClick={() => this.deleteTrack(record.musId)}><Icon type="close" /></a>
-                </span>)
+            (<>
+                <Divider type="vertical" />
+                <a onClick={() => this.deleteTrack(record.musId)}><Icon type="close" /></a>
+            </>)
+
+            const likeElement =
+            (<>
+                <Divider type='vertical' />
+                <Tooltip placement='top' title={record.likes ? `${record.likes} likes` : '0 likes'} >
+                    <a onClick={() => this.toggleLike(record.musId, currentUser!.uti_id!)} >
+                        <Icon type="like" style={{color: record.likedByUser ? '#f94f50' : '#000000a6'}} />
+                    </a>
+                </Tooltip>
+            </>)
 
             return (
                 <span>
                     <a onClick={() => this.downloadTrack(record.musId)}><Icon type="download" /></a>
+                    {likeElement}
                     {currentUser && currentUser.uti_id === record.uploaderId ? deleteElement : ''}
                 </span>)
             }

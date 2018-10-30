@@ -10,7 +10,8 @@ export interface Music {
     filesize: string,
     filepath: string,
     uploaderId: number,
-    uploader_desc: string
+    uploader_desc: string,
+    likes: number
 }
 
 export default async function getOneMusic(musId: number): Promise<{musicInfos: Music} & {file: Buffer}> {
@@ -23,20 +24,25 @@ export default async function getOneMusic(musId: number): Promise<{musicInfos: M
 async function getMusicInfos(musId: number): Promise<Music> {
 
     const query = SQL`
-        SELECT
-            mus_id AS "musId",
-            mus_titre AS title,
-            mus_artiste AS artist,
-            mus_length AS duration,
-            mus_filesize AS filesize,
-            uti_id_uploader AS "uploaderId",
-            mus_path AS filepath,
-            (uti_prenom||' '||uti_nom) AS uploader_desc
-        FROM
-            musique_mus mus
-            INNER JOIN utilisateur_uti uti ON uti.uti_id = mus.uti_id_uploader
+    SELECT
+        mus.mus_id AS "musId",
+        mus_titre AS title,
+        mus_artiste AS artist,
+        mus_length AS duration,
+        mus_filesize AS filesize,
+        uti_id_uploader AS "uploaderId",
+        mus_path AS filepath,
+        (uti_prenom||' '||uti_nom) AS uploader_desc,
+        COUNT(lik.lik_id) AS likes
+    FROM
+        musique_mus mus
+        INNER JOIN utilisateur_uti uti ON uti.uti_id = mus.uti_id_uploader
+        LEFT OUTER JOIN like_lik lik ON mus.mus_id = lik.mus_id
         WHERE
-            mus_id = ${musId}
+        mus.mus_id = ${musId}
+    GROUP BY
+        mus.mus_id,
+        uploader_desc
     `
 
     const res = await pg.query(query)

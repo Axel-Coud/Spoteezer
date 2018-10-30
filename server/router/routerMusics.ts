@@ -1,9 +1,10 @@
 import { Router } from 'express'
 import multer from 'multer'
 import addMusic, { MusicInfos } from '../controller/musics/addMusic'
-import getAllMusic from '../controller/musics/getAllMusic'
+import getAllMusic, { ListMusic } from '../controller/musics/getAllMusic'
 import getOneMusic, { Music } from '../controller/musics/getOneMusic'
 import deleteMusic from '../controller/musics/deleteMusic'
+import toggleLikeForTrackByUser from '../controller/musics/toggleLikeForTrackByUser'
 
 const router = Router()
 
@@ -41,12 +42,12 @@ router.post('/add', upload.single('file'), async (req, res) => {
     return res.status(200).send('Ajouté avec succès')
 })
 
-router.get('/all', async (_, res) => {
+router.get('/all', async (req, res) => {
 
-    let musicList: null | Music[] = null
+    let musicList: null | ListMusic[] = null
 
     try {
-        musicList = await getAllMusic()
+        musicList = await getAllMusic(req.query.userId)
     } catch (error) {
         return res.status(401).send("Échec get all music : " + error)
     }
@@ -76,6 +77,19 @@ router.delete('/delete', async (req, res) => {
     }
 
     res.status(200).json()
+})
+
+router.post('/toggleLike', async (req, res) => {
+
+    let toggled: 'liked' | 'unliked' | null = null
+    try {
+        toggled = await toggleLikeForTrackByUser(req.body.trackId, req.body.userId)
+    } catch (error) {
+        return res.status(500).json(error.message)
+    }
+
+    res.status(200).json(toggled)
+
 })
 
 export default router
