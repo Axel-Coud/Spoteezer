@@ -20,7 +20,7 @@ export default class HomeContentRouter extends React.Component<{currentMenuIndex
                 {(global) => {
                     return(
                     <BrowserRouter>
-                        <div style={{padding: 24, background: '#fff', minHeight: 360}}>
+                        <div style={{background: '#fff', minHeight: 360}}>
                             <Redirect to={routeToRedirect} />
                             {this.props.menuItems.map((menu, index) => {
                                 // On utilise la pattern 'render' pour pouvoir envoyer des props, en l'occurence les informations du user
