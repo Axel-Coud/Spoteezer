@@ -184,9 +184,11 @@ export default class Musique extends React.Component<Props, State> {
             title: <Icon type='clock-circle' />,
             dataIndex: 'duration',
             key: 'duration',
+            align: 'center'
         }, {
             title: 'Actions',
             key: 'actions',
+            align: 'center',
             fixed: 'right',
             width: 110,
             render: (_, record) => {
