@@ -165,6 +165,8 @@ export default class Musique extends React.Component<Props, State> {
         const columns: ColumnProps<ListMusic>[] = [{
             title: '',
             key: 'play',
+            fixed: 'left',
+            width: 50,
             render: (_, record) => {
                 return (<span>
                     <a onClick={() => this.playTrack(record.musId)}><Icon type="play-circle" /></a>
@@ -181,10 +183,12 @@ export default class Musique extends React.Component<Props, State> {
         }, {
             title: <Icon type='clock-circle' />,
             dataIndex: 'duration',
-            key: 'duration'
+            key: 'duration',
         }, {
             title: 'Actions',
             key: 'actions',
+            fixed: 'right',
+            width: 110,
             render: (_, record) => {
 
             const currentUser = this.props.globalActions.getCurrentUser()
@@ -215,7 +219,7 @@ export default class Musique extends React.Component<Props, State> {
         }]
 
         return (<>
-        <Table columns={columns} dataSource={this.state.musicList} />
+        <Table columns={columns} dataSource={this.state.musicList} scroll={{ x: 580}} />
         </>)
     }
 }
