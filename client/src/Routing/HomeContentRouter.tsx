@@ -24,11 +24,11 @@ export default class HomeContentRouter extends React.Component<{currentMenuIndex
                             <Redirect to={routeToRedirect} />
                             {this.props.menuItems.map((menu, index) => {
                                 // On utilise la pattern 'render' pour pouvoir envoyer des props, en l'occurence les informations du user
-                                return <Route path={`/${menu.name}`}
+                                return <Route
+                                path={`/${menu.name}`}
                                 key={index}
                                 render={(props) => <menu.component
                                                         {...props}
-                                                        test={true}
                                                         playlistId={menu.playlistId}
                                                         globalActions={global.actions}
                                                     />}
