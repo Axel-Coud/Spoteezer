@@ -1,20 +1,21 @@
 import React from 'react'
 import axios, { AxiosResponse } from 'axios'
-import { ListMusic } from '../../../../server/controller/musics/getAllMusic'
-import { Table, Icon, Divider, notification, Tooltip } from 'antd'
-import { GlobalActions } from '../../global/Global'
+import { ListedTrack } from '../../../../server/controller/musics/getAllMusic'
+import { Table, Icon, Divider, notification, Tooltip, Popover } from 'antd'
+import { GlobalContext, globalPlug } from '../../global/Global'
 import { ColumnProps } from 'antd/lib/table'
+import PlaylistHeader from '../header/PlaylistHeader'
 
-interface Props {
-    globalActions: GlobalActions
+interface Props extends GlobalContext {
+    playlistId?: number
 }
 
 interface State {
-    musicList: ListMusic[],
+    musicList: ListedTrack[],
     audioSource: string
 }
 
-export default class Musique extends React.Component<Props, State> {
+export default globalPlug(class Musique extends React.Component<Props, State> {
     state: State = {
         musicList: [],
         audioSource: ''
@@ -24,17 +25,13 @@ export default class Musique extends React.Component<Props, State> {
 
     async componentDidMount() {
 
-        let musicList: null | AxiosResponse<any> = null
+        let musicList: null | ListedTrack[] = null
+        const isComponentDisplayingPlaylist = this.props.playlistId
+
         try {
+
             await this.props.globalActions.verifyCurrentUser()
-            const currentUser = this.props.globalActions.getCurrentUser()
-            musicList = await axios({
-                method: 'get',
-                url: 'http://localhost:8889/musics/all',
-                params: {
-                    userId: currentUser!.uti_id
-                }
-            })
+            musicList = isComponentDisplayingPlaylist ? await this.getPlaylistTracks() : await this.getAllMusic()
         } catch (error) {
 
             notification.error({
@@ -46,11 +43,25 @@ export default class Musique extends React.Component<Props, State> {
         }
 
         // Ce map est uniquement là pour mettre des propriétés 'key' par conventions de antd à chaque data
-        const list = musicList.data.map((item) => {
+        const list = musicList.map((item) => {
             return { ...item, key: item.musId }
         })
 
         this.setState({ musicList: list })
+    }
+
+    async getPlaylistTracks(): Promise<ListedTrack[]> {
+
+        // const result = await axios.get('http://localhost:8889/')
+
+        return []
+    }
+
+    async getAllMusic(): Promise<ListedTrack[]> {
+
+        const result = await axios.get('http://localhost:8889/musics/all')
+
+        return result.data
     }
 
     async playTrack(musId: number): Promise<void> {
@@ -162,7 +173,9 @@ export default class Musique extends React.Component<Props, State> {
     }
 
     render() {
-        const columns: ColumnProps<ListMusic>[] = [{
+        debugger
+        const playlists = this.props.globalState.menuItems.filter((menuItem) => menuItem.playlistId)
+        const columns: ColumnProps<ListedTrack>[] = [{
             title: '',
             key: 'play',
             fixed: 'left',
@@ -193,35 +206,70 @@ export default class Musique extends React.Component<Props, State> {
             width: 110,
             render: (_, record) => {
 
-            const currentUser = this.props.globalActions.getCurrentUser()
+                const currentUser = this.props.globalActions.getCurrentUser()
 
-            const deleteElement =
-            (<>
-                <Divider type="vertical" />
-                <a onClick={() => this.deleteTrack(record.musId)}><Icon type="close" /></a>
-            </>)
+                const addToPlaylistList =
+                (<>
+                    {playlists.map((playlist) => <span><a>{playlist.name}</a><br></br></span>)}
+                </>)
 
-            const likeElement =
-            (<>
-                <Divider type='vertical' />
-                <Tooltip placement='top' title={record.likes ? `${record.likes} likes` : '0 likes'} >
-                    <a onClick={() => this.toggleLike(record.musId, currentUser!.uti_id!)} >
-                        <Icon type="like" style={{color: record.likedByUser ? '#f94f50' : '#000000a6'}} />
-                    </a>
-                </Tooltip>
-            </>)
+                const addToPlaylistButton =
+                (<>
+                    <Popover placement="right" title="Ajouter à une playlist" content={addToPlaylistList} trigger="click" >
+                        <a><Icon type="file-add" /></a>
+                    </Popover>
+                    <Divider type="vertical" />
+                </>)
 
-            return (
-                <span>
-                    <a onClick={() => this.downloadTrack(record.musId)}><Icon type="download" /></a>
-                    {likeElement}
-                    {currentUser && currentUser.uti_id === record.uploaderId ? deleteElement : ''}
+                const deleteElement =
+                (<>
+                    <Divider type="vertical" />
+                    <a onClick={() => this.deleteTrack(record.musId)}><Icon type="close" /></a>
+                </>)
+
+                const likeElement =
+                (<>
+                    <Tooltip placement='top' title={record.likes ? `${record.likes} likes` : '0 likes'} >
+                        <a onClick={() => this.toggleLike(record.musId, currentUser!.uti_id!)} >
+                            <Icon type="like" style={{color: record.likedByUser ? '#f94f50' : '#000000a6'}} />
+                        </a>
+                    </Tooltip>
+                    <Divider type='vertical' />
+                </>)
+
+                const actionBar =  (<span>
+                {!this.props.playlistId && addToPlaylistButton}
+                <a onClick={() => this.downloadTrack(record.musId)}><Icon type="download" /></a>
+                {currentUser && currentUser.uti_id === record.uploaderId ? deleteElement : ''}
                 </span>)
+
+                return (
+                    <>
+                        {likeElement}
+                        <Popover placement="right" content={actionBar} trigger="click">
+                            <Icon type="ellipsis" />
+                        </Popover>
+                    </>
+                )
             }
         }]
 
-        return (<>
-        <Table columns={columns} dataSource={this.state.musicList} scroll={{ x: 580}} />
-        </>)
+        const playlistId = this.props.playlistId
+        if (playlistId) {
+            return (
+                <Table
+                    columns={columns}
+                    dataSource={this.state.musicList}
+                    scroll={{ x: 580}}
+                    title={() => <PlaylistHeader playlistId={playlistId} />}
+                />
+            )
+        } else {
+            return <Table
+                columns={columns}
+                dataSource={this.state.musicList}
+                scroll={{ x: 580}}
+            />
+        }
     }
-}
+})

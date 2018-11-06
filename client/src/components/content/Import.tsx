@@ -237,7 +237,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                                                     type='primary'
                                                     onClick={async () => {
                                                         try {
-                                                            await context.actions.verifyCurrentUser()
+                                                            await context.globalActions.verifyCurrentUser()
                                                         } catch (error) {
                                                             notification.error({
                                                                 message: 'Session utilisateur expiré',

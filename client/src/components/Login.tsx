@@ -2,25 +2,25 @@ import React, { CSSProperties } from 'react'
 import { Form, Input, Icon, Button, Row, Col, notification } from 'antd'
 import SignUp from './SignUp'
 import axios from 'axios'
-import { GlobalContext } from '../global/Global';
+import { GlobalContext, globalPlug } from '../global/Global'
 
-export default class Login extends React.Component {
+export default globalPlug(class Login extends React.Component<GlobalContext> {
     state = {
         usernameInput: '',
         passwordInput: '',
         isSignUpVisible: false
     }
 
-    onClickLoginButton = async (globalContext) => {
+    onClickLoginButton = async () => {
         try {
             await this.login()
 
-            globalContext.actions.setLoadingScreen()
-            await globalContext.actions.verifyCurrentUser()
-            globalContext.actions.setLoadingScreen()
+            this.props.globalActions.setLoadingScreen()
+            await this.props.globalActions.verifyCurrentUser()
+            this.props.globalActions.setLoadingScreen()
         } catch (error) {
             console.log(error)
-            globalContext.actions.setLoadingScreen()
+            this.props.globalActions.setLoadingScreen()
         }
     }
 
@@ -109,18 +109,11 @@ export default class Login extends React.Component {
                             <Form.Item>
                                 {/* <Checkbox>Se souvenir de moi</Checkbox> */}
                                 <a className="spz-login-forgot" href="#">Mot de passe oublié ?</a><br/>
-                                <GlobalContext.Consumer>
-                                    {
-                                        (global) => {
-
-                                            return <Button style={buttonStyle}
-                                            size="large"
-                                            type="primary"
-                                            onClick={() => this.onClickLoginButton(global)}
-                                            >Se connecter</Button>
-                                        }
-                                    }
-                                </GlobalContext.Consumer>
+                                <Button style={buttonStyle}
+                                    size="large"
+                                    type="primary"
+                                    onClick={() => this.onClickLoginButton()}
+                                >Se connecter</Button>
                                 <br/>
                                 <Button style={buttonStyle}
                                     size="large"
@@ -141,4 +134,4 @@ export default class Login extends React.Component {
             </div>
         )
     }
-}
+})

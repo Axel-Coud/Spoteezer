@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import multer from 'multer'
 import addMusic, { MusicInfos } from '../controller/musics/addMusic'
-import getAllMusic, { ListMusic } from '../controller/musics/getAllMusic'
+import getAllMusic, { ListedTrack } from '../controller/musics/getAllMusic'
 import getOneMusic, { Music } from '../controller/musics/getOneMusic'
 import deleteMusic from '../controller/musics/deleteMusic'
 import toggleLikeForTrackByUser from '../controller/musics/toggleLikeForTrackByUser'
@@ -44,10 +44,10 @@ router.post('/add', upload.single('file'), async (req, res) => {
 
 router.get('/all', async (req, res) => {
 
-    let musicList: null | ListMusic[] = null
+    let musicList: null | ListedTrack[] = null
 
     try {
-        musicList = await getAllMusic(req.query.userId)
+        musicList = await getAllMusic(req.userId!)
     } catch (error) {
         return res.status(401).send("Échec get all music : " + error)
     }

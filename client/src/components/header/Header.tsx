@@ -6,7 +6,7 @@ export default class Header extends React.Component {
 
     onClickDeco = async (global: GlobalContext): Promise<void> => {
         try {
-            await global.actions.disconnectUser()
+            await global.globalActions.disconnectUser()
             notification.success({
                 description: '',
                 message: 'Deconnecté',
@@ -26,8 +26,8 @@ export default class Header extends React.Component {
                         {(global) => {
                             return (
                                 <>
-                                    <audio className="spz-audio-reader" controls={true} ref={global.state.audioReader}>
-                                        <source src={global.state.audioSource} type='audio/mp3'></source>
+                                    <audio className="spz-audio-reader" controls={true} ref={global.globalState.audioReader}>
+                                        <source src={global.globalState.audioSource} type='audio/mp3'></source>
                                     </audio>
                                     <Tooltip title="Se déconnecter">
                                         <Button type="primary"

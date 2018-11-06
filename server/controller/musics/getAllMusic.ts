@@ -2,11 +2,11 @@ import pg from '../../db'
 import SQL from 'sql-template-strings'
 import { Music } from './getOneMusic'
 
-export interface ListMusic extends Music {
+export interface ListedTrack extends Music {
     likedByUser: boolean
 }
 
-export default async function getAllMusic(userId: string): Promise<ListMusic[]> {
+export default async function getAllMusic(userId: number): Promise<ListedTrack[]> {
 
     const query = SQL`
 	WITH liked_by_user AS (

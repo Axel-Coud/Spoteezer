@@ -30,7 +30,7 @@ export default class HomeContentRouter extends React.Component<{currentMenuIndex
                                 render={(props) => <menu.component
                                                         {...props}
                                                         playlistId={menu.playlistId}
-                                                        globalActions={global.actions}
+                                                        globalActions={global.globalActions}
                                                     />}
                                 />
                             })}
