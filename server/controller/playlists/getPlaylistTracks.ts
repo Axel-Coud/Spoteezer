@@ -1,6 +1,6 @@
 import pg from '../../db'
 import SQL from 'sql-template-strings'
-import { ListedTrack } from '../musics/getAllMusic';
+import { ListedTrack } from '../musics/getAllMusic'
 
 export default async function getPlaylistTracks(playlistId: number, userId: number): Promise<ListedTrack[]> {
 

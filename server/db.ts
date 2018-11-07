@@ -1,5 +1,5 @@
 import { Client } from 'pg'
-import config from './config';
+import config from './config'
 
 const client = new Client(config.dbConfig)
 

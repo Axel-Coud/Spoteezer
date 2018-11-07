@@ -110,7 +110,7 @@ export default class Global extends React.Component<{}, GlobalState> {
             audioReader.load()
             audioReader.play()
             audioReader.onended = (_) => {
-                console.log("la musique s'est finie");
+                console.log("la musique s'est finie")
             }
         })
     }

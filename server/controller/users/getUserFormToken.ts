@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { User } from './addUser'
-import getUserById from './getUserById';
+import getUserById from './getUserById'
 
 export default async function getUserFromToken(jwtToken: string): Promise<Partial<User>> {
 

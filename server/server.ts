@@ -43,7 +43,7 @@ server.get('/', (_, res) => {
 })
 
 server.use('*', (_, res) => {
-    res.redirect('/');
+    res.redirect('/')
 })
 
 server.listen(config.port, () => {
@@ -53,22 +53,3 @@ server.listen(config.port, () => {
 
 /************************************\\`)
 })
-
-// le client se ferme déjà automatiquement(j'ai laissé si jamais j'en aurai besoin un jour)
-// process.on('SIGINT', () => {
-//     // pgClient.end((err) => {
-//     //     if (err) {
-//     //         console.log(err)
-//     //     }
-//         console.log('Server closed')
-// //     })
-// })
-
-// process.on('exit' , async () => {
-// //     pgClient.end((err) => {
-// //         if (err) {
-// //             console.log(err)
-// //         }
-//         console.log('Server closed')
-// //     })
-// })

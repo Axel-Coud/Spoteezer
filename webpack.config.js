@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 
 const config = {
     entry: ['./client/src/App.tsx'],
@@ -26,6 +26,6 @@ const config = {
         }]
     },
     mode: "development"
-};
+}
 
-module.exports = config;
+module.exports = config

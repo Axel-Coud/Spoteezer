@@ -1,6 +1,6 @@
 import pg from '../../db'
 import SQL from 'sql-template-strings'
-import { User } from './addUser';
+import { User } from './addUser'
 
 export default async function getUserById(userId: number): Promise<Partial<User>> {
 
