@@ -82,7 +82,7 @@ export default globalPlug(class PlaylistHeader extends React.Component<Props, St
         return (<div style={{textAlign: 'center', position: 'relative'}}>
             <span>{playlist ? playlist.playlistTitle : ''}</span>
             <Popconfirm placement="left" title={'Voulez vous vraiment détruire cette playlist'} onConfirm={() => this.deletePlaylist()} okText="Oui" cancelText="Non">
-                <Button style={buttonStyle} type='danger' icon='close-square' size='large' color='red' />
+                <Button style={buttonStyle} type='danger' icon='delete' size='large' color='red' />
             </Popconfirm>
         </div>)
     }

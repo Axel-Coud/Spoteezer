@@ -1,7 +1,7 @@
 import React from 'react'
 import axios, { AxiosResponse } from 'axios'
 import { ListedTrack } from '../../../../server/controller/musics/getAllMusic'
-import { Table, Icon, Divider, notification, Tooltip, Popover } from 'antd'
+import { Table, Icon, Divider, notification, Tooltip, Popover, message } from 'antd'
 import { GlobalContext, globalPlug } from '../../global/Global'
 import { ColumnProps } from 'antd/lib/table'
 import PlaylistHeader from '../header/PlaylistHeader'
@@ -52,9 +52,23 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
 
     async getPlaylistTracks(): Promise<ListedTrack[]> {
 
-        // const result = await axios.get('http://localhost:8889/')
+        let result: AxiosResponse<ListedTrack[]> | null = null
+        try {
+            result = await axios.get('http://localhost:8889/playlists/tracks', {
+                params: {
+                    playlistId: this.props.playlistId
+                }
+            })
+        } catch (error) {
+            notification.error({
+                message: 'Impossible de charger la playlist',
+                description: error.response && error.response.data ? error.response.data : error.message
+            })
 
-        return []
+            return []
+        }
+
+        return result.data
     }
 
     async getAllMusic(): Promise<ListedTrack[]> {
@@ -172,9 +186,53 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
         return this.setState({musicList: updatedMusicList})
     }
 
+    async addTrackToPlaylist(musId: number, playlistId: number): Promise<void> {
+
+        try {
+            await this.props.globalActions.verifyCurrentUser()
+            await axios.post('http://localhost:8889/playlists/addTrack', {
+                musId,
+                playlistId
+            })
+        } catch (error) {
+            return notification.error({
+                message: 'Erreur',
+                description: error.response && error.response.data ? error.response.data : error.message,
+                duration: 2
+            })
+        }
+
+        message.success('Morceau ajoutée à la playlist')
+    }
+
+    async removeFromPlaylist(musId: number, playlistId: number): Promise<void> {
+
+        let removedTrack: AxiosResponse<number> | null = null
+        try {
+            await this.props.globalActions.verifyCurrentUser()
+            removedTrack = await axios.delete('http://localhost:8889/playlists/removeTrackFromPlaylist', {
+                params: {
+                    musId,
+                    playlistId
+                }
+            })
+        } catch (error) {
+            return notification.error({
+                message: 'Erreur',
+                description: error.response && error.response.data ? error.response.data : error.message,
+            })
+        }
+
+        const updatedMusicList = this.state.musicList.filter((track) => track.musId !== removedTrack!.data)
+
+        this.setState({musicList: updatedMusicList}, () => {
+            message.success('Morceau supprimée de la playlist')
+        })
+    }
+
     render() {
-        debugger
         const playlists = this.props.globalState.menuItems.filter((menuItem) => menuItem.playlistId)
+
         const columns: ColumnProps<ListedTrack>[] = [{
             title: '',
             key: 'play',
@@ -208,9 +266,19 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
 
                 const currentUser = this.props.globalActions.getCurrentUser()
 
+                const removeFromPlaylistButton =
+                (<>
+                    <Tooltip placement='top' title={'Retirer de la playlist'} >
+                        <a onClick={() => this.removeFromPlaylist(record.musId, this.props.playlistId!)}><Icon type="close" /></a>
+                    </Tooltip>
+                    <Divider type="vertical" />
+                </>)
+
                 const addToPlaylistList =
                 (<>
-                    {playlists.map((playlist) => <span><a>{playlist.name}</a><br></br></span>)}
+                    {playlists.map((playlist) =>
+                        <span key={playlist.playlistId!}><a onClick={() => this.addTrackToPlaylist(record.musId, playlist.playlistId!)}>{playlist.name}</a><br></br></span>
+                    )}
                 </>)
 
                 const addToPlaylistButton =
@@ -224,7 +292,7 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
                 const deleteElement =
                 (<>
                     <Divider type="vertical" />
-                    <a onClick={() => this.deleteTrack(record.musId)}><Icon type="close" /></a>
+                    <a onClick={() => this.deleteTrack(record.musId)}><Icon type="delete" /></a>
                 </>)
 
                 const likeElement =
@@ -237,10 +305,12 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
                     <Divider type='vertical' />
                 </>)
 
-                const actionBar =  (<span>
-                {!this.props.playlistId && addToPlaylistButton}
+                const isNotInPlaylist = !this.props.playlistId
+                const actionBar =
+                (<span>
+                {this.props.playlistId ? removeFromPlaylistButton : addToPlaylistButton}
                 <a onClick={() => this.downloadTrack(record.musId)}><Icon type="download" /></a>
-                {currentUser && currentUser.uti_id === record.uploaderId ? deleteElement : ''}
+                { isNotInPlaylist && currentUser && currentUser.uti_id === record.uploaderId ? deleteElement : ''}
                 </span>)
 
                 return (

@@ -62,8 +62,8 @@ export default globalPlug(class Home extends React.Component<GlobalContext, Stat
         for (let i = 0; i < userPlaylists.length; i++) {
             const playlist = userPlaylists[i]
             menuItems.push({
-                // i + 4 car index 0 n'est pas une clé valide pour Menu.Item et index 1, 2 et 3 sont pris par Musique, Import et Ajouter
-                index: i + 4,
+                // i + 3 car index 0 est pris par Ajouter playlist par la suite et index 1 et 2 sont pris par Musique et Import
+                index: i + 3,
                 name: playlist.playlistTitle,
                 component: Musique,
                 playlistId: playlist.playlistId
@@ -119,11 +119,10 @@ export default globalPlug(class Home extends React.Component<GlobalContext, Stat
         }
 
         const menuItems = this.props.globalState.menuItems
-        // Length -2 car le dernier élément est toujours le menu 'ajouter playlist'
-        const lastPlaylistIndex = menuItems[menuItems.length - 2].index
+        const lastPlaylistIndex = menuItems[menuItems.length - 1].index
 
         const formattedAddedPlaylist: MenuItem = {
-            index: lastPlaylistIndex + 2,
+            index: lastPlaylistIndex + 1,
             name: addedPlaylist.data.playlistTitle,
             playlistId: addedPlaylist.data.playlistId,
             component: Musique
@@ -139,7 +138,7 @@ export default globalPlug(class Home extends React.Component<GlobalContext, Stat
      * Quand on click sur menu envoit la valeur de l'index au state local puis déclenche la callback pour swap d'UI dans content
      */
     onClickMenuItem(e: ClickParam): void {
-        if (e.key === '3') {
+        if (e.key === '0') {
             this.toggleAddPlaylistModal()
         }
 
@@ -175,9 +174,9 @@ export default globalPlug(class Home extends React.Component<GlobalContext, Stat
                         title={<span><Icon type="folder" className="spz-home-layout-icon" /><span>Playlists</span></span>}
                     >
                         {this.props.globalState.menuItems
-                            .filter((menu) => (menu.index !== 1 && menu.index !== 2 && menu.index !== 3))
+                            .filter((menu) => (menu.index !== 1 && menu.index !== 2))
                             .map((menu) => <Menu.Item key={menu.index}>{menu.name}</Menu.Item>)
-                            .concat(<Menu.Item key={3}><Icon type='folder-add'></Icon>Ajouter</Menu.Item>)
+                            .concat(<Menu.Item key={0}><Icon type='folder-add'></Icon>Ajouter</Menu.Item>)
                         }
 
                     </SubMenu>

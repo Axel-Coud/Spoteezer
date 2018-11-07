@@ -107,8 +107,6 @@ export default globalPlug(class Login extends React.Component<GlobalContext> {
                                     />
                             </Form.Item>
                             <Form.Item>
-                                {/* <Checkbox>Se souvenir de moi</Checkbox> */}
-                                <a className="spz-login-forgot" href="#">Mot de passe oublié ?</a><br/>
                                 <Button style={buttonStyle}
                                     size="large"
                                     type="primary"
