@@ -4,7 +4,7 @@ import { FormComponentProps } from 'antd/lib/form'
 import { UploadProps } from 'antd/lib/upload'
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface'
 import axios from 'axios'
-import { GlobalContext } from '../../global/Global'
+import { GlobalContext, globalPlug } from '../../global/Global'
 
 interface State {
     fileList: UploadFile[]
@@ -16,7 +16,7 @@ interface FormValues {
     titre: string
 }
 
-export default Form.create()(class Import extends React.Component<FormComponentProps, State> {
+export default Form.create()(globalPlug(class Import extends React.Component<FormComponentProps & GlobalContext, State> {
 
     state: State = {
         fileList: []
@@ -61,6 +61,7 @@ export default Form.create()(class Import extends React.Component<FormComponentP
     }
 
     onClickUpload = async (userId: number): Promise<void> => {
+        debugger
         const formData = new FormData()
 
         const { getFieldsValue } = this.props.form
@@ -230,32 +231,26 @@ export default Form.create()(class Import extends React.Component<FormComponentP
                             }
                         </Form.Item>
                         <Form.Item>
-                            <GlobalContext.Consumer>
-                                {
-                                    (context) => {
-                                        return <Button
-                                                    type='primary'
-                                                    onClick={async () => {
-                                                        try {
-                                                            await context.globalActions.verifyCurrentUser()
-                                                        } catch (error) {
-                                                            notification.error({
-                                                                message: 'Session utilisateur expiré',
-                                                                description: 'Token invalide',
-                                                                duration: 2
-                                                            })
-                                                        }
-                                                        // @ts-ignore GetCurrentUser is 99% safe to not be null, since we need to be auth'd to be here
-                                                        this.onClickUpload(context.actions.getCurrentUser().uti_id)
-                                                    }}
-                                                >Uploader</Button>
+                            <Button
+                                type='primary'
+                                onClick={async () => {
+                                    try {
+                                        await this.props.globalActions.verifyCurrentUser()
+                                    } catch (error) {
+                                        notification.error({
+                                            message: 'Session utilisateur expiré',
+                                            description: 'Token invalide',
+                                            duration: 2
+                                        })
                                     }
-                                }
-                            </GlobalContext.Consumer>
+                                    // @ts-ignore GetCurrentUser is 99% safe to not be null, since we need to be auth'd to be here
+                                    this.onClickUpload(this.props.globalActions.getCurrentUser().uti_id)
+                                }}
+                            >Uploader</Button>
                         </Form.Item>
                     </Form>
                 </div>
             </>
         )
     }
-})
+}))

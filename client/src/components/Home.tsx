@@ -191,7 +191,7 @@ export default globalPlug(class Home extends React.Component<GlobalContext, Stat
                         { this.props.globalActions.getCurrentUser() ? this.props.globalActions.getCurrentUser()!.uti_prenom : ''}
                         </Breadcrumb.Item>
                     </Breadcrumb>
-                    <HomeContentRouter currentMenuIndex={this.props.globalState.currentMenuIndex} menuItems={this.props.globalState.menuItems} />
+                    <HomeContentRouter/>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
                     Spoteezer ©2018
