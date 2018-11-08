@@ -98,7 +98,7 @@ export default Form.create()(globalPlug(class Import extends React.Component<For
                 notification.success({
                     message: 'Musique ajouté avec succès',
                     description: '',
-                    duration: 2
+                    duration: 4
                 })
             } catch (error) {
                 notification.error({
@@ -125,7 +125,7 @@ export default Form.create()(globalPlug(class Import extends React.Component<For
             notification.error({
                 message: "Impossible d'uploader",
                 description: "Ce n'est pas un fichier audio",
-                duration: 2
+                duration: 4
             })
 
             return this.setState({fileList: []})
@@ -239,7 +239,7 @@ export default Form.create()(globalPlug(class Import extends React.Component<For
                                         notification.error({
                                             message: 'Session utilisateur expiré',
                                             description: 'Token invalide',
-                                            duration: 2
+                                            duration: 4
                                         })
                                     }
                                     // @ts-ignore GetCurrentUser is 99% safe to not be null, since we need to be auth'd to be here
