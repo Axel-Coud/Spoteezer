@@ -18,6 +18,7 @@ export default globalPlug(class Login extends React.Component<GlobalContext> {
             this.props.globalActions.setLoadingScreen()
             await this.props.globalActions.verifyCurrentUser()
             this.props.globalActions.setLoadingScreen()
+            this.props.globalActions.setCurrentMenuIndex(1)
         } catch (error) {
             console.log(error)
             this.props.globalActions.setLoadingScreen()
