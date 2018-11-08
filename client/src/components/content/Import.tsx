@@ -61,7 +61,6 @@ export default Form.create()(globalPlug(class Import extends React.Component<For
     }
 
     onClickUpload = async (userId: number): Promise<void> => {
-        debugger
         const formData = new FormData()
 
         const { getFieldsValue } = this.props.form
