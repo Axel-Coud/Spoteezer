@@ -60,7 +60,7 @@ export default globalPlug(class Login extends React.Component<GlobalContext> {
             notification.success({
                 description: '',
                 message: data,
-                duration: 2,
+                duration: 4,
                 icon: <Icon type="user" style={{color: '#30ce3a'}} />
             })
 

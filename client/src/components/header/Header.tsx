@@ -10,7 +10,7 @@ export default globalPlug(class Header extends React.Component<GlobalContext> {
             notification.success({
                 description: '',
                 message: 'Deconnecté',
-                duration: 2
+                duration: 4
             })
         } catch (error) {
             console.log(error)

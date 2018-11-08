@@ -37,7 +37,7 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
             notification.error({
                 message: "Erreur",
                 description: error.message,
-                duration: 2
+                duration: 4
             })
             return
         }
@@ -94,7 +94,7 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
             return notification.error({
                 message: 'Erreur interne',
                 description: error.message,
-                duration: 2
+                duration: 4
             })
         }
         const audioReader = this.props.globalActions.getAudioReader()
@@ -199,7 +199,7 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
             return notification.error({
                 message: 'Erreur',
                 description: error.response && error.response.data ? error.response.data : error.message,
-                duration: 2
+                duration: 4
             })
         }
 
