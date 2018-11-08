@@ -3,10 +3,10 @@ import getUserPlaylists, { Playlist } from '../controller/playlists/getUserPlayl
 import addPlaylist from '../controller/playlists/addPlaylist'
 import getPlaylistFromId from '../controller/playlists/getPlaylistFromId'
 import deletePlaylist from '../controller/playlists/deletePlaylist'
-import addTrackToPlaylist from '../controller/playlists/addTrackToPlaylist';
-import { ListedTrack } from '../controller/musics/getAllMusic';
-import getPlaylistTracks from '../controller/playlists/getPlaylistTracks';
-import removeTrackFromPlaylist from '../controller/playlists/removeTrackFromPlaylist';
+import addTrackToPlaylist from '../controller/playlists/addTrackToPlaylist'
+import { ListedTrack } from '../controller/musics/getAllMusic'
+import getPlaylistTracks from '../controller/playlists/getPlaylistTracks'
+import removeTrackFromPlaylist from '../controller/playlists/removeTrackFromPlaylist'
 
 const router = Router()
 
