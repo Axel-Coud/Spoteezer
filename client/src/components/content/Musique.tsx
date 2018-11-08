@@ -83,6 +83,7 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
         let music: null | AxiosResponse<Buffer> = null
 
         try {
+            await this.props.globalActions.verifyCurrentUser()
             music = await axios.get('http://localhost:8889/musics/', {
                 params: {
                     musId
