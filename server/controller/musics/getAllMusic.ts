@@ -50,7 +50,7 @@ FROM
 GROUP BY
    mus.mus_id,
    uploader_desc,
-   like_count,
+   likes,
    "likedByUser"
     `
 
