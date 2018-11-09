@@ -10,6 +10,8 @@ to enforce type checking when needed and therefore keeping an ease of maintenanc
 
 Duck-typed database query results written as interfaces are a good example as they can be imported to the client waiting for those data using HTTP.
 
+Keeping the flexibility of Javacript while having TS to act as a safeguard was planned to develop it quicker for diverse reasons too
+
 ## Front-end
 The client uses **Webpack 4** as a bundler with TypeScript in conjunction transpiled using the Webpack configuration which makes Babel unnecessary and permit EcmaScript2018 latest features like ES2017's async/await pattern.
 
@@ -29,7 +31,7 @@ The database runs under **PostgreSQL** and is queried via a raw driver (handmade
 **Multer** is used to handle file uploading via multipart/form-data encoded request bodies. Uploaded files are actually stored locally to not bother with external services (as said earlier: study purposes)
 
 ### Tools & additionnal librairies
-* Visual Studio Code: Highly configurable and extendable open-sourced text editor from Microsoft
+* Visual Studio Code: Highly configurable and extendable open-sourced text editor from Microsoft, with powerful IDE-like features(debugger)
 
 * nodemon: Library used for server reloading when configured sets of events are occurring
 
