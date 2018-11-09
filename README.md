@@ -36,4 +36,3 @@ The database runs under **PostgreSQL** and is queried via a raw driver (handmade
 * tslint: Linter for TypeScript
 
 * moment: Library to make JS dates manipulation handier
-
