@@ -11,7 +11,7 @@ to enforce type checking when needed and therefore keeping an ease of maintenanc
 Duck-typed database query results written as interfaces are a good example as they can be imported to the client waiting for those data using HTTP.
 
 ## Front-end
-Client uses **Webpack 4** as a bundler with TypeScript in conjunction transpiled using the Webpack configuration which makes Babel unnecessary and permit EcmaScript2018 latest features like ES2017's async/await pattern.
+The client uses **Webpack 4** as a bundler with TypeScript in conjunction transpiled using the Webpack configuration which makes Babel unnecessary and permit EcmaScript2018 latest features like ES2017's async/await pattern.
 
 The client application uses **React** as it's framework with no particular additions (except react-router) like Redux or Mobex since it's states are handled via the vanilla React way for local ones and a more 'Global' state is handled via the Context API (which my implementation is in essence what Redux does minus all the verbosity coming with it) for data that need to be accessed across the board.
 
@@ -20,7 +20,7 @@ The client application uses **React** as it's framework with no particular addit
 **Axios** handles the AJAX part and is used as the HTTP client to launch XHRs and access the server.
 
 ## Back-end
-Server uses TypeScript as well and run with the latest specifications of **Node.js** with **Express** as it's core web framework enabling clearer routing and patterns like the middleware one used to authenticate the user.
+The server uses TypeScript as well and run with the latest specifications of **Node.js** with **Express** as it's core web framework enabling clearer routing and patterns like the middleware one used to authenticate the user.
 
 The database runs under **PostgreSQL** and is queried via a raw driver (handmade queries/ no ORM) called **node-postgres** or 'pg' along with a module, 'sql-template-string', to ease string interpolations in the said queries.
 
