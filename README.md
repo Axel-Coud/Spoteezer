@@ -37,5 +37,3 @@ The database runs under **PostgreSQL** and is queried via a raw driver (handmade
 
 * moment: Library to make JS dates manipulation handier
 
-# Specs
-Soon
