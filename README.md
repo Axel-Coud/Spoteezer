@@ -13,7 +13,7 @@ Duck-typed database query results written as interfaces are a good example as th
 ## Front-end
 Client uses **Webpack 4** as a bundler with TypeScript in conjunction transpiled using the Webpack configuration which makes Babel unnecessary and permit EcmaScript2018 latest features like ES2017's async/await pattern.
 
-The client application uses **React** as it's framework with no particular additions (except react-router) like Redux or Mobex since it's state is handled via the vanilla React way for local ones and a more 'Global' state is handled via the Context API (which my implementation is in essence what Redux does minus all the verbosity coming with it) for data that need to accessed across the board.
+The client application uses **React** as it's framework with no particular additions (except react-router) like Redux or Mobex since it's states are handled via the vanilla React way for local ones and a more 'Global' state is handled via the Context API (which my implementation is in essence what Redux does minus all the verbosity coming with it) for data that need to be accessed across the board.
 
 **Ant-design** is used for everything UX/UI concerned or even data containers like tables etc...
 
