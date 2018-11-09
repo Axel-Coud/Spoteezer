@@ -1,6 +1,6 @@
 
 # Objectives
-This project only serves study purposes,
+This project only serves study/certification purposes,
 the whole functionalities are revolving around music(streaming, downloading, uploading etc...)
 
 # Stack
