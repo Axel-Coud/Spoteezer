@@ -1,7 +1,7 @@
 
 # Objectives
-This project serves study purposes,
-the whole functionalities are revolving around listening, downloading or uploading music.
+This project only serves study purposes,
+the whole functionalities are revolving around music(streaming, downloading, uploading etc...)
 
 # Stack
 The application is a fully fledged **TypeScript** one for multiple reasons,  
@@ -26,7 +26,7 @@ The database runs under **PostgreSQL** and is queried via a raw driver (handmade
 
 **Jsonwebtoken and Bcrypt** libraries are used for everything cryptography related
 
-**Multer** is used to handle file uploading via multipart/form-data encoded request bodies
+**Multer** is used to handle file uploading via multipart/form-data encoded request bodies. Uploaded files are actually stored locally to not bother with external services (as said earlier: study purposes)
 
 ### Tools & additionnal librairies
 * Visual Studio Code: Highly configurable and extendable open-sourced text editor from Microsoft
