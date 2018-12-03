@@ -3,3 +3,4 @@ node_modules/
 client/bundle.js
 server/**/*.js
 server/**/*.map
+.env
