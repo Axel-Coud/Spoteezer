@@ -16,8 +16,15 @@ const editButtonStyle: React.CSSProperties = {
     top: '-10px'
 }
 
+const playButtonStyle: React.CSSProperties = {
+    position: 'absolute',
+    right: '89px',
+    top: '-10px'
+}
+
 interface Props extends GlobalContext {
-    playlistId: number
+    playlistId: number,
+    launchPlaylist(): Promise<void>
 }
 
 interface State {
@@ -125,6 +132,7 @@ export default globalPlug(class PlaylistHeader extends React.Component<Props, St
         const playlist = this.state.playlist
         return (<div style={{textAlign: 'center', position: 'relative'}}>
             <span style={{fontWeight: 'bold'}}>{playlist ? playlist.playlistTitle : ''}</span>
+            <Button style={playButtonStyle} onClick={this.props.launchPlaylist} type='primary' icon='play-circle' size='large' />
             <Popover
                 placement='left'
                 content={<>

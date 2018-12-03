@@ -78,32 +78,6 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
         return result.data
     }
 
-    async playTrack(musId: number): Promise<void> {
-
-        let music: null | AxiosResponse<Buffer> = null
-
-        try {
-            await this.props.globalActions.verifyCurrentUser()
-            music = await axios.get('http://localhost:8889/musics/', {
-                params: {
-                    musId
-                },
-                responseType: 'blob'
-            })
-        } catch (error) {
-            return notification.error({
-                message: 'Erreur interne',
-                description: error.message,
-                duration: 4
-            })
-        }
-        const audioReader = this.props.globalActions.getAudioReader()
-        const url = URL.createObjectURL(music.data)
-        if (audioReader.current) {
-            this.props.globalActions.setAudioSource(url, audioReader.current)
-        }
-    }
-
     /**
      * Download une musique depuis le serveur en fonction de l'id envoyée en paramètre
      * @param musId Id de la musique à télécharger
@@ -231,6 +205,12 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
         })
     }
 
+    launchPlaylist = async (): Promise<void> => {
+        debugger
+        const musics = this.state.musicList
+        this.props.globalActions.setMusicQueue(musics)
+    }
+
     render() {
         const playlists = this.props.globalState.menuItems.filter((menuItem) => menuItem.playlistId)
 
@@ -241,7 +221,7 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
             width: 50,
             render: (_, record) => {
                 return (<span>
-                    <a onClick={() => this.playTrack(record.musId)}><Icon type="play-circle" /></a>
+                    <a onClick={() => this.props.globalActions.playTrack(record.musId, false)}><Icon type="play-circle" /></a>
                 </span>)
             }
         }, {
@@ -332,7 +312,7 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
                     columns={columns}
                     dataSource={this.state.musicList}
                     scroll={{ x: 580}}
-                    title={() => <PlaylistHeader playlistId={playlistId} />}
+                    title={() => <PlaylistHeader launchPlaylist={this.launchPlaylist} playlistId={playlistId} />}
                 />
             )
         } else {

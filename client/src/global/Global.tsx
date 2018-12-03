@@ -1,6 +1,8 @@
 import React from 'react'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { MenuItem } from '../components/Home'
+import { Music } from '../../../server/controller/musics/getOneMusic'
+import { notification } from 'antd'
 
 interface GlobalState {
     currentUser: Partial<User> | null
@@ -9,6 +11,8 @@ interface GlobalState {
     audioReader: React.RefObject<HTMLAudioElement>
     currentMenuIndex: number
     menuItems: MenuItem[]
+    musicQueue: Music[]
+    currentMusicQueueIndex: number
 }
 
 export interface GlobalActions {
@@ -16,10 +20,12 @@ export interface GlobalActions {
     verifyCurrentUser(): Promise<void>
     setLoadingScreen(): void
     disconnectUser(): Promise<void>
-    setAudioSource(audioSource: string, audioReader: HTMLAudioElement): void
+    setAudioSource(audioSource: string, audioReader: HTMLAudioElement, isLaunchedFromPlaylist: boolean): void
     getAudioReader(): React.RefObject<HTMLAudioElement>
     setCurrentMenuIndex(index: number): void
     setMenuItems(menuItems: MenuItem[]): void
+    setMusicQueue(musicQueue: Music[]): void
+    playTrack(musId: number, isLaunchedFromPlaylist: boolean): Promise<void>
 }
 
 export interface GlobalContext {
@@ -50,7 +56,9 @@ export default class Global extends React.Component<{}, GlobalState> {
         audioSource: '',
         audioReader: React.createRef<HTMLAudioElement>(),
         currentMenuIndex: 1,
-        menuItems: []
+        menuItems: [],
+        musicQueue: [],
+        currentMusicQueueIndex: -1
     }
 
     async componentDidMount() {
@@ -97,20 +105,65 @@ export default class Global extends React.Component<{}, GlobalState> {
         this.setState({currentUser: null})
     }
 
+    playTrack = async (musId: number, isLaunchedFromPlaylist: boolean): Promise<void> => {
+
+        let music: null | AxiosResponse<Buffer> = null
+
+        try {
+            await this.verifyCurrentUser()
+            music = await axios.get('http://localhost:8889/musics/', {
+                params: {
+                    musId
+                },
+                responseType: 'blob'
+            })
+        } catch (error) {
+            return notification.error({
+                message: 'Erreur interne',
+                description: error.message,
+                duration: 4
+            })
+        }
+        const audioReader = this.getAudioReader()
+        const url = URL.createObjectURL(music.data)
+        if (audioReader.current) {
+
+            if (isLaunchedFromPlaylist) {
+                this.setAudioSource(url, audioReader.current, true)
+            } else {
+                this.setState({musicQueue: [], currentMusicQueueIndex: -1}, () => {
+                    this.setAudioSource(url, audioReader.current!, false)
+                })
+            }
+        }
+    }
+
     /**
      * Update l'audio reader avec une nouvelle musique et la joue
      * @param audioSource blobUrl built with URL.createObjectUrl(blob)
      * @param audioReader
      */
-    setAudioSource = (audioSource: string, audioReader: HTMLAudioElement): void => {
+    setAudioSource = (audioSource: string, audioReader: HTMLAudioElement, isLaunchedFromPlaylist: boolean): void => {
         this.setState({
             audioSource
         }, () => {
             audioReader.pause()
             audioReader.load()
             audioReader.play()
-            audioReader.onended = (_) => {
-                console.log("la musique s'est finie")
+            if (isLaunchedFromPlaylist) {
+                audioReader.onended = (_) => {
+                    const nextIndex = this.state.currentMusicQueueIndex + 1
+                    const isEndOfQueue = nextIndex > (this.state.musicQueue.length - 1)
+
+                    if (isEndOfQueue) {
+                        return
+                    } else {
+                        const nextMusic = this.state.musicQueue[nextIndex]
+                        this.setState({ currentMusicQueueIndex: nextIndex }, () => {
+                            this.playTrack(nextMusic.musId, true)
+                        })
+                    }
+                }
             }
         })
     }
@@ -123,8 +176,18 @@ export default class Global extends React.Component<{}, GlobalState> {
         return this.setState({currentMenuIndex: index})
     }
 
-    setMenuItems = (menuItems: MenuItem[]) => {
+    setMenuItems = (menuItems: MenuItem[]): void => {
         return this.setState({menuItems})
+    }
+
+    setMusicQueue = (musicQueue: Music[]): void => {
+        return this.setState({
+            musicQueue,
+            currentMusicQueueIndex: 0
+        }, async () => {
+
+            this.playTrack(musicQueue[0].musId, true)
+        })
     }
 
     actions: GlobalActions = {
@@ -135,7 +198,9 @@ export default class Global extends React.Component<{}, GlobalState> {
         setAudioSource: this.setAudioSource,
         getAudioReader: this.getAudioReader,
         setCurrentMenuIndex: this.setCurrentMenuIndex,
-        setMenuItems: this.setMenuItems
+        setMenuItems: this.setMenuItems,
+        setMusicQueue: this.setMusicQueue,
+        playTrack: this.playTrack
     }
 
     render() {
