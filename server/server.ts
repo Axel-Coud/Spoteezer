@@ -5,8 +5,12 @@ import validateToken from './Authentication'
 import getUserFromToken from './controller/users/getUserFormToken'
 import cookieParser from 'cookie-parser'
 import { User } from './controller/users/addUser'
+import dotenv from 'dotenv'
 
 const server = express()
+
+// Fetch environment variables from .env file
+dotenv.config()
 
 // On sert les assets depuis le rootDir ./client
 server.use(express.static(__dirname + './../client/'))

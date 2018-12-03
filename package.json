@@ -45,6 +45,6 @@
   "scripts": {
     "bundle": "webpack --watch",
     "tsc": "tsc",
-    "dev": "JWT_SECRET=pouet nodemon --delay 1 -e js --watch server server/server.js"
+    "dev": "nodemon --delay 1 -e js --watch server server/server.js"
   }
 }

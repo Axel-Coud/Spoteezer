@@ -20,7 +20,8 @@ const config: Config = {
         user: 'postgres',
         host: 'localhost',
         database: 'spoteezer',
-        password: 'admin',
+        // Cast env var to string as typescript thinks it can be undefined
+        password: process.env.DB_PWD as string,
         port: 5432
     }
 }
