@@ -1,7 +1,6 @@
 
 # Objectives
-This project only serves study/certification purposes,
-the whole functionalities are revolving around music(streaming, downloading, uploading etc...)
+This project only serves study/certification purposes, the whole functionalities are revolving around music(streaming, downloading, uploading etc...)
 
 # Stack
 The application is a fully fledged **TypeScript** one for multiple reasons,  
