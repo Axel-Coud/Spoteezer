@@ -1,12 +1,18 @@
 import React from 'react'
 import { Playlist } from '../../../../server/controller/playlists/getUserPlaylists'
-import { Button, notification, Popconfirm } from 'antd'
+import { Button, notification, Popconfirm, Popover, Input } from 'antd'
 import axios, { AxiosResponse } from 'axios'
 import { globalPlug, GlobalContext } from '../../global/Global'
 
-const buttonStyle: React.CSSProperties = {
+const deleteButtonStyle: React.CSSProperties = {
     position: 'absolute',
     right: '7px',
+    top: '-10px'
+}
+
+const editButtonStyle: React.CSSProperties = {
+    position: 'absolute',
+    right: '48px',
     top: '-10px'
 }
 
@@ -15,13 +21,15 @@ interface Props extends GlobalContext {
 }
 
 interface State {
-    playlist: Playlist | null
+    playlist: Playlist | null,
+    pllTitleInput: string
 }
 
 export default globalPlug(class PlaylistHeader extends React.Component<Props, State> {
 
     state: State = {
-        playlist: null
+        playlist: null,
+        pllTitleInput: ''
     }
 
     async componentDidMount() {
@@ -76,13 +84,65 @@ export default globalPlug(class PlaylistHeader extends React.Component<Props, St
         this.props.globalActions.setCurrentMenuIndex(1)
     }
 
+    onEditPllTitleInputChange = (inputValue: string): void => {
+        this.setState({pllTitleInput: inputValue})
+    }
+
+    handleEditPll = async (): Promise<void> => {
+
+        if (!this.state.pllTitleInput.length) {
+            return notification.warn({
+                message: "Veuillez donner un nouveau à la playlist",
+                description: '',
+                duration: 2
+            })
+        }
+
+        const currentMenuItems = this.props.globalState.menuItems
+        const playlistIndex = currentMenuItems.findIndex((menuItem) => menuItem.playlistId === this.props.playlistId)
+
+        let updatedPlaylist: AxiosResponse<Playlist> | null = null
+        try {
+            updatedPlaylist = await axios.post('http://localhost:8889/playlists/editTitle', {
+                playlistId: this.props.playlistId,
+                playlistTitle: this.state.pllTitleInput
+            })
+        } catch (error) {
+            return notification.error({
+                message: "Erreur dans l'édition de la playlist",
+                description: error.response && error.response.data ? error.response.data : error.message,
+                duration: 4
+            })
+        }
+
+        currentMenuItems[playlistIndex].name = updatedPlaylist.data.playlistTitle
+        this.props.globalActions.setMenuItems(currentMenuItems)
+
+    }
+
     render() {
 
         const playlist = this.state.playlist
         return (<div style={{textAlign: 'center', position: 'relative'}}>
-            <span>{playlist ? playlist.playlistTitle : ''}</span>
+            <span style={{fontWeight: 'bold'}}>{playlist ? playlist.playlistTitle : ''}</span>
+            <Popover
+                placement='left'
+                content={<>
+                        <Input
+                            placeholder='nom de la playlist'
+                            onChange={(e) => this.onEditPllTitleInputChange(e.target.value)}
+                            defaultValue={this.state.playlist ? this.state.playlist.playlistTitle : ''}
+                            style={{width: '80%', marginRight: 10}}
+                        />
+                        <Button onClick={this.handleEditPll} icon='edit' />
+                        </>}
+                title='Renommer la playlist'
+                trigger='click'
+            >
+                <Button style={editButtonStyle} type='primary' icon='edit' size='large' />
+            </Popover>
             <Popconfirm placement="left" title={'Voulez vous vraiment détruire cette playlist'} onConfirm={() => this.deletePlaylist()} okText="Oui" cancelText="Non">
-                <Button style={buttonStyle} type='danger' icon='delete' size='large' color='red' />
+                <Button style={deleteButtonStyle} type='danger' icon='delete' size='large' />
             </Popconfirm>
         </div>)
     }

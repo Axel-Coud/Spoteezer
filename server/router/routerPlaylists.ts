@@ -7,6 +7,7 @@ import addTrackToPlaylist from '../controller/playlists/addTrackToPlaylist'
 import { ListedTrack } from '../controller/musics/getAllMusic'
 import getPlaylistTracks from '../controller/playlists/getPlaylistTracks'
 import removeTrackFromPlaylist from '../controller/playlists/removeTrackFromPlaylist'
+import editPlaylistTitle from '../controller/playlists/editPlaylistTitle'
 
 const router = Router()
 
@@ -92,6 +93,18 @@ router.delete('/removeTrackFromPlaylist', async (req, res) => {
     }
 
     return res.status(200).json(removedTrackId)
+})
+
+router.post('/editTitle', async (req, res) => {
+
+    let updatedPlaylist: Playlist | null = null
+    try {
+        updatedPlaylist = await editPlaylistTitle(req.body.playlistId, req.body.playlistTitle)
+    } catch (error) {
+        return res.status(500).json(error.message)
+    }
+
+    res.status(200).json(updatedPlaylist)
 })
 
 export default router
