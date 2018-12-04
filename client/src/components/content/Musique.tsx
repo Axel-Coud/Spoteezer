@@ -206,7 +206,6 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
     }
 
     launchPlaylist = async (): Promise<void> => {
-        debugger
         const musics = this.state.musicList
         this.props.globalActions.setMusicQueue(musics)
     }
