@@ -1,7 +1,7 @@
 import React from 'react'
 import axios, { AxiosResponse } from 'axios'
 import { ListedTrack } from '../../../../server/controller/musics/getAllMusic'
-import { Table, Icon, Divider, notification, Tooltip, Popover, message } from 'antd'
+import { Table, Icon, Divider, notification, Tooltip, Popover, message, Input, Button } from 'antd'
 import { GlobalContext, globalPlug } from '../../global/Global'
 import { ColumnProps } from 'antd/lib/table'
 import PlaylistHeader from '../header/PlaylistHeader'
@@ -12,16 +12,22 @@ interface Props extends GlobalContext {
 
 interface State {
     musicList: ListedTrack[],
-    audioSource: string
+    audioSource: string,
+    // ! Stalled, see ticket #51 https://github.com/Axel-Coud/Spoteezer/issues/51
+    // filterTableText: string
 }
 
 export default globalPlug(class Musique extends React.Component<Props, State> {
     state: State = {
         musicList: [],
-        audioSource: ''
+        audioSource: '',
+        // ! Stalled, see ticket #51 https://github.com/Axel-Coud/Spoteezer/issues/51
+        // filterTableText: '',
     }
 
     audioRef = React.createRef<HTMLAudioElement>()
+    // ! Stalled, see ticket #51 https://github.com/Axel-Coud/Spoteezer/issues/51
+    // filterInputRef = React.createRef<Input>()
 
     async componentDidMount() {
 
@@ -210,6 +216,19 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
         this.props.globalActions.setMusicQueue(musics)
     }
 
+    // ! Stalled, see ticket #51 https://github.com/Axel-Coud/Spoteezer/issues/51
+    // handleSearch = (selectedKeys, confirm) => (): void => {
+    //     debugger
+    //     confirm()
+    //     this.setState({ filterTableText: selectedKeys[0] })
+    // }
+
+    // handleReset = (clearFilters) => () => {
+    //     debugger
+    //     clearFilters()
+    //     this.setState({ filterTableText: '' })
+    // }
+
     render() {
         const playlists = this.props.globalState.menuItems.filter((menuItem) => menuItem.playlistId)
 
@@ -226,7 +245,41 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
         }, {
             title: 'Titre',
             dataIndex: 'title',
-            key: 'title'
+            key: 'title',
+            // ! Stalled, see ticket #51 https://github.com/Axel-Coud/Spoteezer/issues/51
+            // filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            //     <div>
+            //         <Input
+            //             ref={this.filterInputRef}
+            //             placeholder="Filtrer"
+            //             value={selectedKeys[0]}
+            //             onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            //             onPressEnter={this.handleSearch(selectedKeys, confirm)}
+            //             />
+            //         <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
+            //         <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+            //     </div>
+            // ),
+            // filterIcon: <Icon type="filter" style={{ color: '#108ee9' }} />,
+            // onFilter: (value, record) => record.title.toLowerCase().includes(value.toLowerCase()),
+            // onFilterDropdownVisibleChange: (visible) => {
+            //     if (visible) {
+            //         setTimeout(() => {
+            //         this.filterInputRef.current.focus()
+            //         })
+            //     }
+            // },
+            // render: (text) => {
+            //     const { filterTableText } = this.state
+            //     return filterTableText ? (
+            //         <span>
+            //                 {text.split(new RegExp(`(${filterTableText})`, 'gi')).map((fragment, i) => (
+            //                 fragment.toLowerCase() === filterTableText.toLowerCase()
+            //                     ? <span key={i} className="highlight">{fragment}</span> : fragment
+            //                 ))}
+            //         </span>
+            //     ) : text
+            // }
         }, {
             title: 'Artiste',
             dataIndex: 'artist',
