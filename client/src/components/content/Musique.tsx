@@ -1,7 +1,7 @@
 import React from 'react'
 import axios, { AxiosResponse } from 'axios'
 import { ListedTrack } from '../../../../server/controller/musics/getAllMusic'
-import { Table, Icon, Divider, notification, Tooltip, Popover, message, Input, Button } from 'antd'
+import { Table, Icon, Divider, notification, Tooltip, Popover, message, Pagination } from 'antd'
 import { GlobalContext, globalPlug } from '../../global/Global'
 import { ColumnProps } from 'antd/lib/table'
 import PlaylistHeader from '../header/PlaylistHeader'
@@ -362,6 +362,7 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
             return (
                 <Table
                     columns={columns}
+                    pagination={{ defaultCurrent: 1, pageSize: 4}}
                     dataSource={this.state.musicList}
                     scroll={{ x: 580}}
                     title={() => <PlaylistHeader launchPlaylist={this.launchPlaylist} playlistId={playlistId} />}
@@ -370,6 +371,7 @@ export default globalPlug(class Musique extends React.Component<Props, State> {
         } else {
             return <Table
                 columns={columns}
+                pagination={{ defaultCurrent: 1, pageSize: 5}}
                 dataSource={this.state.musicList}
                 scroll={{ x: 580}}
             />
