@@ -9,15 +9,13 @@ export default async function getUserFromToken(jwtToken: string): Promise<Partia
     }
 
     // @ts-ignore process.env.JWT_SECRET should not be considered undefined in any circumstances
-    const verified = jwt.verify(jwtToken, process.env.JWT_SECRET)
+    const verifiedToken = jwt.verify(jwtToken, process.env.JWT_SECRET)
 
-    const decodedToken = jwt.decode(jwtToken)
-
-    if (!decodedToken) {
+    if (!verifiedToken) {
         throw new Error(`Le decodage du token a échoué`)
     }
 
-    const user = await getUserById(decodedToken!['userId'])
+    const user = await getUserById(verifiedToken!['userId'])
 
     return user!
 }
